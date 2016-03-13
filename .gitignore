@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.pycd
 *$py.class
 
 # C extensions
@@ -33,6 +34,7 @@ var/
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+.directory
 
 # Unit test / coverage reports
 htmlcov/
