@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="XmlPrintVoucher">
+        <receipt align='center' width='40' value-thousands-separator='' >
+            <t t-set="line_division" t-value=""/>
+            <t t-foreach="[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]" t-as="count">
+                <t t-set="line_division" t-value="line_division+'-'"/>
+            </t>
+			<div font='b'>
+                *****GIFT VOUCHER*****
+               <t t-if='receipt.company.name'>
+                    <div><t t-esc='receipt.company.name' /></div>
+               </t>
+                <t t-if='receipt.company.company_registry'>
+                    <div>NIF:<t t-esc='receipt.company.company_registry' /></div>
+                </t>
+
+                <t t-if='receipt.company.street'>
+                    <div>
+                        <t t-esc='receipt.company.street' />
+                    </div>
+                </t>
+
+                <t t-if='receipt.company.email'>
+                    <div><t t-esc='receipt.company.email' /></div>
+                </t>
+                <t t-if='receipt.company.website'>
+                    <div><t t-esc='receipt.company.website' /></div>
+                </t>
+               <t t-esc='line_division'/>
+                <span align='left'>
+                    Print date:<t t-esc='receipt.print_date' /><br />
+                    Salesman:<t t-esc='receipt.salesman' /><br />
+                    <t t-esc='line_division'/><br />
+                    Description:<t t-esc='receipt.name' /><br />
+                    Issue date:<t t-esc='receipt.issue_date' /><br />
+                    Expiry date:<t t-esc='receipt.expiry_date' /><br />
+                    S/N:<t t-esc='receipt.gift_voucher_serial' /><br />
+                    Amount: <t t-esc='receipt.amount' /><br />
+                </span>
+            </div>
+        </receipt>
+    </t>
+</templates>

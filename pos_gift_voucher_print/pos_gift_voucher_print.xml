@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <template id="assets_backend" name="print_voucher" inherit_id="web.assets_backend">
+      <xpath expr="." position="inside">
+          <script type="text/javascript" src="/pos_gift_voucher_print/static/src/js/print.js" />
+          <script type="text/javascript" src="/pos_gift_voucher_print/static/src/js/main.js" />
+      </xpath>
+    </template>
+
+    <record id="action_print_voucher" model="ir.actions.client">
+        <field name="name">Print Button</field>
+        <field name="tag">print_voucher_action</field>
+        <field name="context">{'voucher_ids': [active_id]}</field>
+    </record>
+
+    <record id="gift_voucher_view_form" model="ir.ui.view">
+        <field name="name">pos.gift.voucher.view.form</field>
+        <field name="model">pos.gift.voucher</field>
+        <field name="inherit_id" ref="pos_gift_voucher.gift_voucher_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_cancel']" position="before">
+                <button name="%(action_print_voucher)d" states="opened" string="Print" type="action" confirm="Are you sure to print?"/>
+            </xpath>
+        </field>
+    </record>
+</data>
+</openerp>

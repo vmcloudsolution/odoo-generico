@@ -1,0 +1,77 @@
+# Translators:
+# Elmer Ventocilla <miguelventocilla@gmail.com>, 2015
+msgid ""
+msgstr ""
+
+#. module: pos_gift_voucher
+#: view:pos.gift.voucher:pos_gift_voucher_print.gift_voucher_view_form
+msgid "Print"
+msgstr "Imprimir"
+
+#. module: pos_gift_voucher
+#: view:pos.gift.voucher:pos_gift_voucher_print.gift_voucher_view_form
+msgid "Are you sure to print?"
+msgstr "¿Seguro de imprimir?"
+
+#. module: pos_gift_voucher_print
+#. openerp-web
+#: code:addons/pos_gift_voucher_print/static/src/xml/print.xml:10
+#, python-format
+msgid "*****GIFT VOUCHER*****"
+msgstr "*****VALE DE REGALO*****"
+
+#. module: pos_gift_voucher_print
+#. openerp-web
+#: code:addons/pos_gift_voucher_print/static/src/xml/print.xml:15
+#, python-format
+msgid "NIF:"
+msgstr "RUC:"
+
+#. module: pos_gift_voucher_print
+#. openerp-web
+#: code:addons/pos_gift_voucher_print/static/src/xml/print.xml:32
+#, python-format
+msgid "Print date:"
+msgstr "Fecha de impresión:"
+
+#. module: pos_gift_voucher_print
+#. openerp-web
+#: code:addons/pos_gift_voucher_print/static/src/xml/print.xml:33
+#, python-format
+msgid "Salesman:"
+msgstr "Vendedor:"
+
+#. module: pos_gift_voucher_print
+#. openerp-web
+#: code:addons/pos_gift_voucher_print/static/src/xml/print.xml:34
+#, python-format
+msgid "Description:"
+msgstr "Descripción:"
+
+#. module: pos_gift_voucher_print
+#. openerp-web
+#: code:addons/pos_gift_voucher_print/static/src/xml/print.xml:35
+#, python-format
+msgid "Validity:"
+msgstr "Validez:"
+
+#. module: pos_gift_voucher_print
+#. openerp-web
+#: code:addons/pos_gift_voucher_print/static/src/xml/print.xml:36
+#, python-format
+msgid "Issue date:"
+msgstr "Fecha de emisión:"
+
+#. module: pos_gift_voucher_print
+#. openerp-web
+#: code:addons/pos_gift_voucher_print/static/src/xml/print.xml:38
+#, python-format
+msgid "Expiry date:"
+msgstr "Fecha de vencimiento:"
+
+#. module: pos_gift_voucher_print
+#. openerp-web
+#: code:addons/pos_gift_voucher_print/static/src/xml/print.xml:40
+#, python-format
+msgid "Amount:"
+msgstr "Importe:"
