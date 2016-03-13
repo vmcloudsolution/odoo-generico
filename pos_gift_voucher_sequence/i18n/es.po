@@ -1,0 +1,9 @@
+# Translators:
+# Elmer Ventocilla <miguelventocilla@gmail.com>, 2015
+msgid ""
+msgstr ""
+
+#. module: pos_gift_voucher_sequence
+#: view:pos.gift.voucher:pos_gift_voucher_sequence.gift_voucher_view_form
+msgid "Draft Voucher"
+msgstr "Vale borrador"

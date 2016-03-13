@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="gift_voucher_view_form" model="ir.ui.view">
+            <field name="name">pos.gift.voucher.view.form</field>
+            <field name="model">pos.gift.voucher</field>
+            <field name="inherit_id" ref="pos_gift_voucher.gift_voucher_view_form" />
+            <field name="arch" type="xml">
+                <field name="gift_voucher_serial" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="total_available" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </field>
+                <field name="gift_voucher_serial" position="replace">
+                    <h1>
+                        <label string="Draft Voucher" attrs="{'invisible': [('state','not in',('draft',))]}"/>
+                        <field name="gift_voucher_serial" readonly="1" class="oe_inline"/>
+                    </h1>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

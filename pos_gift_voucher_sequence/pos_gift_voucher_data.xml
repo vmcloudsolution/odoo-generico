@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="ir_sequence_type_gift_voucher" model="ir.sequence.type">
+            <field name="name">Gift Voucher</field>
+            <field name="code">pos.gift.voucher</field>
+        </record>
+        <record id="sequence_pos_gift_voucher" model="ir.sequence">
+            <field name="name">Gift Voucher</field>
+            <field name="code">pos.gift.voucher</field>
+            <field name="prefix">GV/</field>
+            <field eval="4" name="padding"/>
+            <field name="implementation">no_gap</field>
+        </record>
+    </data>
+</openerp>
