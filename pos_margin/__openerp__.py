@@ -2,7 +2,6 @@
 
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
 #    This module copyright :
 #        (c) 2015 VMCloud Solution (http://vmcloudsolution.pe)
 #
@@ -29,7 +28,7 @@
     This module adds the 'Margin' on pos order.
     """,
     'author':'VMCloud Solution',
-    'website': 'https://www.odoo.com/page/billing',
+    'website': 'http://vmcloudsolution.pe',
     'depends':['point_of_sale'],
     'data':['security/ir.model.access.csv', 'pos_margin_view.xml'],
     'auto_install': False,
