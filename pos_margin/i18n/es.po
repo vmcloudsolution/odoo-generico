@@ -1,0 +1,13 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * sale_margin
+# 
+# Translators:
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014
+msgid ""
+msgstr ""
+
+#. module: pos_margin
+#: field:pos.order.line,gross_margin:0
+msgid "Gross Margin"
+msgstr "Margen bruto"
