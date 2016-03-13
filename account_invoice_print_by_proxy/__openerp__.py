@@ -30,7 +30,7 @@
     """,
     'author':'VMCloud Solution',
     'website': 'http://vmcloudsolution.pe',
-    'depends': ['account', 'posbox_proxy_backend'],
+    'depends': ['account', 'account_invoice_amount_to_text', 'posbox_proxy_backend'],
     'data': ['security/ir.model.access.csv',
              'account_invoice_print_by_proxy.xml',
              ],

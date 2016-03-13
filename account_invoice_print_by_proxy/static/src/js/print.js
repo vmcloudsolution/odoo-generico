@@ -11,7 +11,7 @@ function openerp_print_invoice(instance, module){
         },
         print_receipts: function(receipts){
             var self = this;
-            this.proxy_url = "http://192.168.1.35:8069"
+            this.proxy_url = "http://192.168.2.100:8069"
             this.proxy = new module.ProxyDevice(this);
             this.proxy.connect(this.proxy_url)
             _.each(receipts,function(receipt){

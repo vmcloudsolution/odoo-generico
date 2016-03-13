@@ -66,6 +66,11 @@
                     <br/>
                 </t>
             </t>
+            <line>
+                <left>
+                    <t t-esc='receipt.amount_text'/>
+                </left>
+            </line>
             <line size='double-height'>
                 <right><t t-esc='receipt.currency.symbol'/><value><t t-esc='receipt.amount_total' /></value></right>
             </line>

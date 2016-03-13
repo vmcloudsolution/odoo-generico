@@ -73,6 +73,7 @@ class account_invoice(osv.osv):
                 'currency': {
                     'symbol': account_invoice_obj.currency_id.symbol,
                 },
+                'amount_text': account_invoice_obj.amount_text,
                 'max_product': 10,
             }
             invoice_line = []
