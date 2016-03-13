@@ -1,0 +1,190 @@
+# Translators:
+# Elmer Ventocilla <miguelventocilla@gmail.com>, 2015
+msgid ""
+msgstr ""
+
+#. module: pos_gift_voucher
+#: field:pos.gift.voucher,name:0
+msgid "name"
+msgstr "Nombre"
+
+#. module: pos_gift_voucher
+#: field:pos.gift.voucher,validity:0
+msgid "validity"
+msgstr "Dias de validez"
+
+#. module: pos_gift_voucher
+#: field:pos.gift.voucher,validity:0
+msgid "validity"
+msgstr "Dias de validez"
+
+#. module: pos_gift_voucher
+#: field:pos.gift.voucher,issue_date:0
+msgid "issue_date"
+msgstr "Fecha de emisión"
+
+#. module: pos_gift_voucher
+#: field:pos.gift.voucher,expiry_date:0
+msgid "expiry_date"
+msgstr "Fecha de vencimiento"
+
+#. module: pos_gift_voucher
+#: field:pos.gift.voucher,amount:0
+msgid "amount"
+msgstr "Importe"
+
+#. module: pos_gift_voucher
+#: field:pos.gift.voucher,gift_voucher_serial:0
+msgid "gift_voucher_serial"
+msgstr "Serie del vale"
+
+#. module: pos_gift_voucher
+#: field:pos.gift.voucher,total_available:0
+msgid "total_available"
+msgstr "Total disponible"
+
+#. module: pos_gift_voucher
+#: field:pos.gift.voucher,state:0
+msgid "state"
+msgstr "Estado"
+
+#. module: pos_gift_voucher
+#: selection:pos.gift.voucher,state:0
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: pos_gift_voucher
+#: selection:pos.gift.voucher,state:0
+#: view:pos.gift.voucher:pos_gift_voucher.gift_voucher_view_form
+msgid "In Progress"
+msgstr "En progreso"
+
+
+#. module: pos_gift_voucher
+#: selection:pos.gift.voucher,state:0
+msgid "Cancel"
+msgstr "Cancelado"
+
+#. module: pos_gift_voucher
+#: selection:pos.gift.voucher,state:0
+msgid "Cancel"
+msgstr "Cancelado"
+
+#. module: pos_gift_voucher
+#: selection:pos.gift.voucher,state:0
+msgid "Redeemed"
+msgstr "Canjeado"
+
+#. module: pos_gift_voucher
+#: view:pos.gift.voucher:pos_gift_voucher.gift_voucher_view_form
+msgid "Cancel Gift voucher"
+msgstr "Cancelar vale de regalo"
+
+#. module: pos_gift_voucher
+#: view:pos.gift.voucher:pos_gift_voucher.gift_voucher_view_form
+msgid "Orders"
+msgstr "Pedidos"
+
+
+#. module: pos_gift_voucher
+#: model:ir.ui.menu,name:pos_gift_voucher.menu_gift_voucher
+#: model:ir.ui.menu,name:pos_gift_voucher.menu_gift_voucher2
+#: field:account.bank.statement.line,gift_voucher_id:0
+msgid "Gift Voucher"
+msgstr "Vale de regalo"
+
+#. module: pos_gift_voucher
+#: field:account.journal,for_gift_voucher:0
+msgid "For gift voucher"
+msgstr "Para vale de regalo"
+
+#. module: pos_gift_voucher
+#: code:addons/pos_gift_voucher/point_of_sale.py:20
+msgid "The gift voucher:"
+msgstr "El vale de regalo"
+
+#. module: pos_gift_voucher
+#: code:addons/pos_gift_voucher/point_of_sale.py:20
+msgid " is invalid or has already redeemed."
+msgstr "No es valido o ha sido canjeado"
+
+#. module: pos_gift_voucher
+#: code:addons/pos_gift_voucher/pos_gift_voucher.py:60
+msgid "Unable to Delete!"
+msgstr "Imposible de borrar"
+
+#. module: pos_gift_voucher
+#: code:addons/pos_gift_voucher/pos_gift_voucher.py:60
+msgid "To remove a gift voucher, it must be draft"
+msgstr "Para eliminar un vale de regalo, este debe ser borrador"
+
+#. module: pos_gift_voucher
+#: code:addons/pos_gift_voucher/pos_gift_voucher.py:60
+msgid "Operation Forbidden!"
+msgstr "¡Operación prohibida!"
+
+#. module: pos_gift_voucher
+#: code:addons/pos_gift_voucher/pos_gift_voucher.py:60
+msgid "Gift voucher must be in state \'Draft\'"
+msgstr "Vale de regalo debe estar en estado Borrador"
+
+#. module: pos_gift_voucher
+#. openerp-web
+#: code:addons/pos_gift_voucher/static/src/js/screens.js:39
+#, python-format
+msgid "Invalid voucher"
+msgstr "Vale inválido"
+
+#. module: pos_gift_voucher
+#. openerp-web
+#: code:addons/pos_gift_voucher/static/src/js/screens.js:40
+#, python-format
+msgid "The gift voucher is invalid or has already redeemed"
+msgstr "El vale de regalo es inválido o ha sido canjeado"
+
+#. module: pos_gift_voucher
+#. openerp-web
+#: code:addons/pos_gift_voucher/static/src/js/screens.js:40
+#, python-format
+msgid "It is not a valid gift voucher"
+msgstr "No es un vale de regalo válido"
+
+#. module: pos_gift_voucher
+#. openerp-web
+#: code:addons/pos_gift_voucher/static/src/js/screens.js:47
+#, python-format
+msgid "Verify the amount"
+msgstr "Verifique el importe"
+
+#. module: pos_gift_voucher
+#. openerp-web
+#: code:addons/pos_gift_voucher/static/src/js/screens.js:47
+#, python-format
+msgid "Gift voucher amount must be less or equal to the order"
+msgstr "El monto del vale de regalo debe ser menor o igual al pedido"
+
+#. module: pos_gift_voucher
+#. openerp-web
+#: code:addons/pos_gift_voucher/static/src/js/screens.js:32
+#, python-format
+msgid "Duplicate gift voucher"
+msgstr "Vale de regalo duplicado"
+
+#. module: pos_gift_voucher
+#. openerp-web
+#: code:addons/pos_gift_voucher/static/src/xml/pos.xml:9
+#, python-format
+msgid "Validate Gift Voucher"
+msgstr "Validar vale de regalo"
+
+#. module: pos_gift_voucher
+#. openerp-web
+#: code:addons/pos_gift_voucher/static/src/xml/pos.xml:9
+#, python-format
+msgid "Gift Voucher Serial #"
+msgstr "Serie vale de regalo #"
+
+#. module: pos_gift_voucher
+#: model:ir.actions.act_window,name:pos_gift_voucher.action_gift_voucher
+msgid "Register Gift Voucher"
+msgstr "Registrar vale de regalo"

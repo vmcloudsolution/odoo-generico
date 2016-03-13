@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="Paymentline">
+        <t t-jquery=".paymentline-input" t-operation="replace">
+            <t t-if="line.for_gift_voucher">
+                <input class='paymentline-input' type="number" step="0.01" t-att-value="line.get_amount_str()" disabled="true"/>
+                <input class='paymentline-input-gift-voucher' type="text" placeholder='Gift Voucher Serial #' t-att-value="line.get_gift_voucher_serial()"/>
+                <span>
+                    <button class="pos-gift-voucher-button">Validate Gift Voucher</button>
+                </span>
+            </t>
+            <t t-if="!line.for_gift_voucher">
+                <input class='paymentline-input' type="number" step="0.01" t-att-value="line.get_amount_str()"/>
+                <input class='paymentline-input-gift-voucher oe_hidden' type="text" placeholder='Gift Voucher Serial #' t-att-value="line.get_gift_voucher_serial()"/>
+                <span>
+                    <button class="pos-gift-voucher-button oe_hidden">Validate Gift Voucher</button>
+                </span>
+            </t>
+        </t>
+        <t t-jquery=".paymentline-delete" t-operation="replace">
+            <t t-if="line.for_gift_voucher">
+                <span  class='paymentline-delete' style="bottom:50px">
+                    <img src="/point_of_sale/static/src/img/search_reset.gif" />
+                </span>
+            </t>
+            <t t-if="!line.for_gift_voucher">
+                <span  class='paymentline-delete'>
+                    <img src="/point_of_sale/static/src/img/search_reset.gif" />
+                </span>
+            </t>
+        </t>
+    </t>
+</templates>
