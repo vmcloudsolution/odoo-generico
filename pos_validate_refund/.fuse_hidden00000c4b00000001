@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_report_pos_venta_neta_graph" model="ir.ui.view">
+            <field name="name">report.pos.venta.neta.graph</field>
+            <field name="model">report.pos.venta.neta</field>
+            <field name="arch" type="xml">
+                <graph string="Venta Neta" type="pivot">
+                    <field name="user_id" type="row"/>
+                    <field name="date_order" interval="month" type="col" string="Fecha"/>
+                    <field name="amount" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_report_pos_order_graph" model="ir.ui.view">
+            <field name="name">report.pos.order.graph</field>
+            <field name="model">report.pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_report_pos_order_graph"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='price_total']" position="replace">
+                    <field name="total" type="measure"/>
+                </xpath>
+                <xpath expr="//field[@name='product_qty']" position="replace">
+                </xpath>
+                 <xpath expr="//field[@name='product_categ_id']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='date']" position="replace">
+                    <field name="date" interval="year" type="row"/>
+                    <field name="date" interval="month" type="row"/>
+                    <field name="date" interval="day" type="row"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_report_pos_order_search" model="ir.ui.view">
+            <field name="name">report.pos.order.search</field>
+            <field name="model">report.pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="arch" type="xml">
+                <search string="Point of Sale Analysis">
+                    <field name="product_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="report_pos_venta_neta_tree">
+            <field name="name">report.pos.venta.neta.tree</field>
+            <field name="model">report.pos.venta.neta</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Venta Neta" create="false">
+                    <field name="date_order" string="Fecha"/>
+                    <field name="user_id"/>
+                    <field name="vendedor_id"/>
+                    <field name="amount"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="report_pos_venta_neta_search">
+            <field name="name">report_pos_venta_neta.search</field>
+            <field name="model">report.pos.venta.neta</field>
+            <field name="arch" type="xml">
+                <search string="Cajero">
+                    <field name="user_id"/>
+                    <field name="vendedor_id"/>
+                    <field name="date_order"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Cajero" name="User" context="{'group_by':'user_id'}"/>
+                        <filter string="Vendedor" name="Vendedor" context="{'group_by':'vendedor_id'}"/>
+                        <separator/>
+                        <filter string="Mes" context="{'group_by':'date_order:month'}" help="Mes del pedido"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_report_pos_venta_neta_reg">
+            <field name="name">Venta Neta</field>
+            <field name="res_model">report.pos.venta.neta</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="help">Reporte de Venta Neta</field>
+        </record>
+
+        <!--Menus-->
+        <menuitem name="Punto de Venta" parent="base.menu_reporting" id="menu_point_repo" sequence="8" groups="point_of_sale.group_pos_manager,vmcloud_report_sale.group_pos_vendedor"/>
+        <menuitem action="action_report_pos_venta_neta_reg" id="menu_point_of_sale_report_pos_venta_neta" parent="menu_point_repo" sequence="4" groups="point_of_sale.group_pos_manager,vmcloud_report_sale.group_pos_vendedor"/>
+        <menuitem
+            parent="point_of_sale.menu_point_of_sale"
+            action="point_of_sale.action_pos_session"
+            id="menu_pos_session_all"
+            sequence="1"
+            groups="group_pos_vendedor"/>
+
+        <menuitem action="point_of_sale.action_report_pos_order_all" id="menu_report_pos_order_all" parent="menu_point_repo" sequence="3"/>
+    </data>
+</openerp>
