@@ -6,7 +6,6 @@ function openerp_print_invoice(instance, module){
 
     module.Invoice  = Backbone.Model.extend({
         initialize: function(attributes){
-            this.boleta = false
             return this;
         },
         print_receipts: function(receipts){
@@ -16,9 +15,6 @@ function openerp_print_invoice(instance, module){
             this.proxy.connect(this.proxy_url)
             _.each(receipts,function(receipt){
                 this.formato = 'XmlInvoice'
-                if (self.boleta) {
-                    this.formato = 'XmlBoleta'
-                }
                 self.proxy.print_receipt(QWeb.render(this.formato,{
                     receipt: receipt, widget: self,
                 }
@@ -45,7 +41,6 @@ function openerp_print_invoice(instance, module){
         this.Invoice = new module.Invoice(this);
 
         if (context.context.invoice_ids) this.invoice_ids = context.context.invoice_ids;
-        if (context.context.boleta) this.Invoice.boleta = context.context.boleta;
         this.Invoice.print_invoice(this.invoice_ids);
     };
 };

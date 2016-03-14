@@ -11,13 +11,7 @@
     <record id="action_print_invoice" model="ir.actions.client">
         <field name="name">Button Action</field>
         <field name="tag">print_action_invoice</field>
-        <field name="context">{'invoice_ids': [active_id], 'boleta': False}</field>
-    </record>
-
-    <record id="action_print_boleta" model="ir.actions.client">
-        <field name="name">Button Action</field>
-        <field name="tag">print_action_invoice</field>
-        <field name="context">{'invoice_ids': [active_id], 'boleta': True}</field>
+        <field name="context">{'invoice_ids': [active_id]}</field>
     </record>
 
     <record id="invoice_form" model="ir.ui.view">
@@ -26,12 +20,7 @@
         <field name="inherit_id" ref="account.invoice_form"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='invoice_print']" position="after">
-                 <button name="%(action_print_invoice)d" string="Imprimir factura" type="action" attrs="{'invisible': ['|',('state','not in',('open','paid')), ('boleta', '=', True)]}" confirm="¿Seguro de imprimir?"/>
-            </xpath>
-            <xpath expr="//button[@name='invoice_print']" position="after">
-                 <button name="%(action_print_boleta)d" string="Imprimir boleta" type="action" attrs="{'invisible': ['|',('state','not in',('open','paid')), ('boleta', '=', False)]}" confirm="¿Seguro de imprimir?"/>
-            </xpath>
-            <xpath expr="//button[@name='invoice_print']" position="replace">
+                 <button name="%(action_print_invoice)d" string="Imprimir factura" type="action" attrs="{'invisible': ['|',('state','not in',('open','paid'))]}" confirm="¿Seguro de imprimir?"/>
             </xpath>
             <xpath expr="//button[@name='invoice_print']" position="replace">
             </xpath>
