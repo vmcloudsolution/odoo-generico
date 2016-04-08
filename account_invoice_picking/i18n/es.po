@@ -1,0 +1,24 @@
+# Translators:
+# Elmer Ventocilla <eventocilla@vmcloudsolution.pe>, 2016
+msgid ""
+msgstr ""
+
+#. module: account_invoice_picking
+#: field:account.invoice,warehouse_id:0
+msgid "Warehouse"
+msgstr "Almacén"
+
+#. module: account_invoice_picking
+#: field:account.invoice,picking_id:0
+msgid "Picking"
+msgstr "Albarán"
+
+#. module: account_invoice_picking
+#: code:addons/account_invoice_picking/account_invoice.py:52
+msgid "Missing picking type outgoing for the warehouse %s."
+msgstr "Falta el tipo de operación de salida para el Almacén"
+
+#. module: account_invoice_picking
+#: code:addons/account_invoice_picking/account_invoice.py:52
+msgid "You cannot cancel an invoice that has a picking without reversing."
+msgstr "No se puede cancelar una factura que tiene un Albarán sin revertir"
