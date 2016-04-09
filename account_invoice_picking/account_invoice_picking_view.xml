@@ -12,7 +12,43 @@
             <xpath expr="//field[@name='move_id']" position="after">
                  <field name="picking_id" readonly="1"/>
             </xpath>
+            <xpath expr="//button[@name='action_invoice_sent']" position="after">
+                 <button name="action_create_delivery_order"
+                        string="Create delivery order"
+                        type="object"
+                        attrs="{'invisible': ['|',('state', 'not in', ('open', 'paid')), ('picking_id', '!=', False)]}"
+                        class="oe_highlight"
+                        confirm="¿Seguro de crear la orden de entrega?"
+                        groups="base.group_user"/>
+            </xpath>
         </field>
     </record>
+    <record id="invoice_tree" model="ir.ui.view">
+        <field name="name">account.invoice.tree</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='number']" position="after">
+                 <field name="picking_id"/>
+            </xpath>
+            <xpath expr="//tree[@string='Invoice']" position="attributes">
+                <field name="picking_id" invisible="1" />
+                <attribute name="colors">red:picking_id == False and state in ('open', 'paid');blue:state == 'draft';black:state in ('proforma','proforma2','open');gray:state == 'cancel'</attribute>
+            </xpath>
+        </field>
+    </record>
+    <!--<record id="view_sales_config" model="ir.ui.view">-->
+        <!--<field name="name">sale settings</field>-->
+        <!--<field name="model">sale.config.settings</field>-->
+        <!--<field name="inherit_id" ref="sale.view_sales_config"/>-->
+        <!--<field name="arch" type="xml">-->
+            <!--<div name="Customer Features" position="inside">-->
+                <!--<div name="sale_picking_automatic">-->
+                    <!--<field name="picking_automatic" class="oe_inline"/>-->
+                    <!--<label for="picking_automatic"/>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</field>-->
+    <!--</record>-->
 </data>
 </openerp>

@@ -29,7 +29,7 @@ class account_invoice(osv.osv):
 
     _columns = {
         'warehouse_id': fields.many2one('stock.warehouse', 'Warehouse', required=True),
-        'picking_id': fields.many2one('stock.picking', 'Picking', 'Picking associated to this invoice'),
+        'picking_id': fields.many2one('stock.picking', 'Picking', 'Picking associated to this invoice', copy=False),
     }
 
     def _get_picking_type_out(self, cr, uid, warehouse_id, context=None):
@@ -85,7 +85,6 @@ class account_invoice(osv.osv):
                     'location_id': location_id if line.quantity >= 0 else destination_id,
                     'location_dest_id': destination_id if line.quantity >= 0 else location_id,
                 }, context=context))
-
             if picking_id:
                 picking_obj.action_confirm(cr, uid, [picking_id], context=context)
                 picking_obj.force_assign(cr, uid, [picking_id], context=context)
@@ -96,12 +95,11 @@ class account_invoice(osv.osv):
                 move_obj.action_done(cr, uid, move_list, context=context)
         return picking_id
 
-    def invoice_validate(self, cr, uid, ids, context=None):
+    def action_create_delivery_order(self, cr, uid, ids, context=None):
         picking_id = self.create_picking(cr, uid, ids, context=context)
         if not picking_id:
             raise osv.except_osv('Error!', _('Cannot create picking'))
-        res = super(account_invoice, self).invoice_validate(cr, uid, ids, context=context)
-        return res
+        return True
 
     def _get_picking_type_returns(self, cr, uid, invoice_id, context=None):
         picking_type_id = self.pool.get('account.invoice').browse(cr, uid, invoice_id, context=context).picking_id.picking_type_id.id
@@ -144,4 +142,12 @@ class account_invoice(osv.osv):
                 new_picking = self.create_returns(cr, uid, invoice, context=context)
                 if pick_obj.browse(cr, uid, new_picking, context=context).state != 'done':
                     raise osv.except_osv('Error!', _('You cannot cancel an invoice that has a picking without reversing.'))
+                invoice.write({'picking_id': False}, context=context)
         return super(account_invoice, self).action_cancel(cr, uid, ids, context=context)
+
+# class sale_configuration(osv.TransientModel):
+#     _inherit = 'sale.config.settings'
+#
+#     _columns = {
+#         'picking_automatic': fields.boolean('Create picking automatically', implied_group='account_invoice_picking.group_picking_automatic', help='Allows create picking automatically to validate invoice'),
+#     }

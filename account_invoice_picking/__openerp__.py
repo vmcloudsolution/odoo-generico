@@ -31,6 +31,7 @@
     'website': 'http://vmcloudsolution.pe',
     'depends': ['account', 'stock'],
     'data': ['security/ir.model.access.csv',
+             'security/security.xml',
              'account_invoice_picking_view.xml',
              ],
     'auto_install': False,

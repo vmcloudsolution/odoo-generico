@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+        <!--<record id="group_picking_automatic" model="res.groups">-->
+            <!--<field name="name">Create picking automatically</field>-->
+            <!--<field name="category_id" ref="base.module_category_hidden"/>-->
+        <!--</record>-->
+    </data>
+</openerp>
