@@ -26,9 +26,21 @@ class posbox_proxy_backend(osv.osv):
     _name = 'posbox.proxy.backend'
 
     _columns = {
-        'name': fields.char('Name', select=1, required=True),
+        'name': fields.char('Model name', select=1, help="Model name, for example: sale.order", required=True),
+        'user_id': fields.many2one('res.users', 'User', help="If you set a user will have higher priority"),
         'value_ip': fields.char('Value IP', help='The hostname or ip address of the hardware proxy', size=45),
     }
+
+    def get_proxy_url(self, cr, uid, name, context=None):
+        proxy_backend_ids = self.search(cr, uid, [('name', '=', name)], context=context)
+        proxy_url = 'http://localhost:8069'
+        for proxy_backend_obj in self.browse(cr, uid, proxy_backend_ids, context=context):
+            if proxy_backend_obj.user_id.id == uid:
+                proxy_url = proxy_backend_obj.value_ip
+                break
+            else:
+                proxy_url = proxy_backend_obj.value_ip
+        return proxy_url
 
     def set_value_space(self, value, space=7, align='right'):
         if align == 'left':

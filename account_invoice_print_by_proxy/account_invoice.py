@@ -46,6 +46,7 @@ class account_invoice(osv.osv):
 
     def export_for_printing(self, cr, uid, invoice_ids, context=None):
         receipts = []
+        proxy_url = self.pool.get("posbox.proxy.backend").get_proxy_url(cr, uid, 'account.invoice', context=context)
         date_format = self.get_date_formats(cr, uid, context=context)
         dp_account = self.pool.get('decimal.precision').precision_get(cr, uid, 'Account')
         dp_qty = self.pool.get('decimal.precision').precision_get(cr, uid, 'Product Unit of Measure')
@@ -54,6 +55,7 @@ class account_invoice(osv.osv):
             account_invoice_obj = self.pool.get("account.invoice").browse(cr, uid, invoice_id, context=context)
             receipt = {
                 'id': invoice_id,
+                'proxy_url': proxy_url,
                 'number': account_invoice_obj.number,
                 'date_invoice': datetime.strptime(account_invoice_obj.date_invoice, '%Y-%m-%d').strftime(date_format[0]),
                 'date_invoice2': datetime.strptime(account_invoice_obj.date_invoice, '%Y-%m-%d').strftime('%d de %B del %Y'),

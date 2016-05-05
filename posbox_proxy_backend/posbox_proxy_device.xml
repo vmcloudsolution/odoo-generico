@@ -15,6 +15,7 @@
         <field name="arch" type="xml">
             <tree string="Proxy backend" create="true" editable="top">
                 <field name="name"/>
+                <field name="user_id"/>
                 <field name="value_ip"/>
             </tree>
         </field>
