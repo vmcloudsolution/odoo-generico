@@ -33,7 +33,7 @@ class account_invoice(osv.osv):
     }
 
     def _get_picking_type_out(self, cr, uid, warehouse_id, context=None):
-        picking_type_id = self.pool.get('stock.picking.type', self).search(cr, uid, [('warehouse_id', '=', warehouse_id), ('code', '=', 'outgoing')], context=context)
+        picking_type_id = self.pool.get('stock.picking.type', self).search(cr, uid, [('warehouse_id', '=', warehouse_id), ('code', '=', 'outgoing')], context=context, limit=1)
         return picking_type_id
 
     def create_picking(self, cr, uid, ids, context=None):
