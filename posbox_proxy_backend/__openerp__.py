@@ -30,7 +30,9 @@
     'author':'VMCloud Solution',
     'website': 'http://vmcloudsolution.pe',
     'depends': ['base'],
-    'data': ['posbox_proxy_device.xml', 'posbox_proxy_device_data.xml'],
+    'data': ['security/ir.model.access.csv',
+             'posbox_proxy_device.xml',
+             'posbox_proxy_device_data.xml'],
     'auto_install': False,
     'installable': True,
 }
