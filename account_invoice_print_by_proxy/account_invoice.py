@@ -22,6 +22,7 @@
 
 from datetime import datetime
 from openerp.osv import fields, osv
+from openerp.tools.translate import _
 
 class account_invoice(osv.osv):
     _inherit = "account.invoice"
@@ -91,6 +92,7 @@ class account_invoice(osv.osv):
                             'ean13': line.product_id.ean13 if line.product_id.ean13 else '',
                             'default_code': line.product_id.default_code.encode('utf-8', 'ignore') if line.product_id.default_code else '',
                             'uom': line.product_id.uom_id.name,
+                            'product_uom': _(line.uos_id.name),
                             'quantity': quantity_str,
                             'price_unit_str': self.set_value_space(round(line.price_unit, dp_price), 8),
                             'price_subtotal_str': self.set_value_space(round(line.price_subtotal, dp_account), 13),
