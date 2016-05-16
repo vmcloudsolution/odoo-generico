@@ -28,8 +28,16 @@ class account_invoice(osv.osv):
     _inherit = "account.invoice"
 
     _columns = {
-        'warehouse_id': fields.many2one('stock.warehouse', 'Warehouse', required=True),
-        'picking_id': fields.many2one('stock.picking', 'Picking', 'Picking associated to this invoice', copy=False),
+        'warehouse_id': fields.many2one('stock.warehouse', 'Warehouse'),
+        'picking_id': fields.many2one('stock.picking', 'Orden de entrega', 'Orden de entrega asociado', copy=False),
+    }
+
+    def _default_warehouse(self, cr, uid, context=None):
+        print 'padre'
+        return False
+
+    _defaults = {
+        'warehouse_id': _default_warehouse,
     }
 
     def _get_picking_type_out(self, cr, uid, warehouse_id, context=None):
@@ -42,14 +50,16 @@ class account_invoice(osv.osv):
         picking_type_obj = self.pool.get('stock.picking.type')
         partner_obj = self.pool.get('res.partner')
         move_obj = self.pool.get('stock.move')
-
+        picking_id = None
         for invoice in self.browse(cr, uid, ids, context=context):
+            if not invoice.warehouse_id.id:
+                raise osv.except_osv('Verifique!', 'Seleccione un Almacén')
             if all(t == 'service' for t in invoice.invoice_line.mapped('product_id.type')):
                 continue
             addr = invoice.partner_id and partner_obj.address_get(cr, uid, [invoice.partner_id.id], ['delivery']) or {}
             picking_type_id = self._get_picking_type_out(cr, uid, invoice.warehouse_id.id, context=context)
             if not picking_type_id:
-                raise osv.except_osv('Error!', _('Missing picking type outgoing for the warehouse %s. Please configure those fields and try again.' % (invoice.warehouse_id.name,)))
+                raise osv.except_osv('Error!', _('No se pudo encontrar el tipo de operacion Salida para %s. Puede deverse a que no cuenta con el acceso a dicho almacen o no esta configurado.' % (invoice.warehouse_id.name,)))
             picking_type_obj = picking_type_obj.browse(cr, uid, picking_type_id, context=context)
             picking_id = picking_obj.create(cr, uid, {
                 'origin': invoice.number,
@@ -65,7 +75,7 @@ class account_invoice(osv.osv):
             location_id = invoice.warehouse_id.lot_stock_id.id
             destination_id = invoice.partner_id.property_stock_customer.id
             if not destination_id:
-                picking_type_obj.default_location_dest_id.id
+                destination_id = picking_type_obj.default_location_dest_id.id
             else:
                 destination_id = partner_obj.default_get(cr, uid, ['property_stock_customer'], context=context)['property_stock_customer']
             move_list = []
