@@ -32,7 +32,7 @@ class posbox_proxy_backend(osv.osv):
     }
 
     def get_proxy_url(self, cr, uid, name, context=None):
-        proxy_backend_ids = self.search(cr, uid, [('name', '=', name)], context=context)
+        proxy_backend_ids = self.search(cr, uid, [('name', '=', name), '|', ('user_id', '=', uid), ('user_id', '=', False)], context=context, order='user_id')
         proxy_url = 'http://localhost:8069'
         for proxy_backend_obj in self.browse(cr, uid, proxy_backend_ids, context=context):
             if proxy_backend_obj.user_id.id == uid:
