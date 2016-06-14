@@ -112,8 +112,9 @@ class account_invoice(osv.osv):
         return True
 
     def _get_picking_type_returns(self, cr, uid, invoice_id, context=None):
-        picking_type_id = self.pool.get('account.invoice').browse(cr, uid, invoice_id, context=context).picking_id.picking_type_id.id
-        return picking_type_id
+        invoice_obj = self.pool.get('account.invoice').browse(cr, uid, invoice_id, context=context)
+        pick_type_id = invoice_obj.picking_id.picking_type_id.return_picking_type_id and invoice_obj.picking_id.picking_type_id.return_picking_type_id.id or invoice_obj.picking_id.picking_type_id.id
+        return pick_type_id
 
     def create_returns(self, cr, uid, invoice_obj, context=None):
         move_obj = self.pool.get('stock.move')
