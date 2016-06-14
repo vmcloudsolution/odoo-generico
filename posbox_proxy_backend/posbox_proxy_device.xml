@@ -16,7 +16,7 @@
             <tree string="Proxy backend" create="true" editable="top">
                 <field name="name"/>
                 <field name="user_id"/>
-                <field name="value_ip"/>
+                <field name="value_ip" placeholder="http://192.168.1.35:8069"/>
             </tree>
         </field>
     </record>
