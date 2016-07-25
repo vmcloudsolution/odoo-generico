@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="css_pos" inherit_id="point_of_sale.index">
+            <xpath expr="//head" position="inside">
+              <link rel="stylesheet" href="/pos_lock_screen/static/src/css/lock_screen.css" />
+            </xpath>
+        </template>
+        <template id="assets_frontend" inherit_id="web.assets_common">
+          <xpath expr="." position="inside">
+              <script type="text/javascript" src="/pos_lock_screen/static/src/js/main.js"></script>
+              <script type="text/javascript" src="/pos_lock_screen/static/src/js/screens.js"></script>
+              <script type="text/javascript" src="/pos_lock_screen/static/src/js/widgets.js"></script>
+              <script type="text/javascript" src="/pos_lock_screen/static/src/js/models.js"></script>
+              <script type="text/javascript" src="/pos_lock_screen/static/src/js/db.js"></script>
+          </xpath>
+        </template>
+
+    </data>
+</openerp> 
