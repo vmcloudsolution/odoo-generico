@@ -14,9 +14,7 @@ function openerp_pos_lock_screen_widgets(instance,module){
             this._super();
             this.$el.click(function(){
                 self.pos.lock_screen = true;
-                self.pos.pos_widget.screen_selector.show_popup('lock_screen',{
-                    'message':('Ingrese su código PIN'),
-                });
+                self.pos.LockScreen()
             });
         }
     });

@@ -53,10 +53,9 @@ function openerp_pos_lock_screen_screens(instance,module){
                     if (this.pos.users[i].id == pin_user.id){
                         //this.pos.user = this.pos.users[i]; //Cambia el cajero: Cuando se cree modulo que cambie el vendedor esto se quitara comentario
                         //POR OTRO MODULO HAREMOS QUE CAMBIE EL VENDEDOR
-                        $("#vendedorNombre").text("Vendedor:"+pin_user.name);
-                        var selectedOrder = this.pos.get('selectedOrder');
-                        selectedOrder.set_vendedor(pin_user);
+                        this.pos.get('selectedOrder').set_vendedor(pin_user);
                         this.pos.lock_screen = false;
+                        this.pos.vendedor = pin_user;
                         //FIN
                         break;
                     }

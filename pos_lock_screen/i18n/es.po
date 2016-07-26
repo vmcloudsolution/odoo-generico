@@ -11,6 +11,16 @@ msgid "PIN code"
 msgstr "Código PIN"
 
 #. module: pos_lock_screen
+#: field:pos.config,lockscreen_every_order:0
+msgid "Lock screen every order"
+msgstr "Bloquea pantalla en cada pedido"
+
+#. module: pos_lock_screen
+#: help:pos.config,lockscreen_every_order:0
+msgid "Lock screen every POS order"
+msgstr "Bloquea pantalla en cada pedido"
+
+#. module: pos_lock_screen
 #: help:res.users,pin_code:0
 msgid "The PIN code must be four digits"
 msgstr "El código PIN debe ser de cuatro digitos"
@@ -24,3 +34,8 @@ msgstr "\nIngrese un número valido de cuatro digitos para el código PIN:\n Eje
 #: sql_constraint:res.users:0
 msgid "The PIN code must be unique per user!"
 msgstr "El codigo PIN debe ser unico por usuario!"
+
+#. module: pos_lock_screen
+#: view:pos.config:pos_lock_screen.view_pos_config_form
+msgid "Lock Screen"
+msgstr "Bloquear pantalla"

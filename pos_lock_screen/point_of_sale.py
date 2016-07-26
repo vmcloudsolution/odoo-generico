@@ -25,7 +25,7 @@ from openerp import tools, SUPERUSER_ID
 class res_users(osv.osv):
     _inherit = 'res.users'
     _columns = {
-        'pin_code': fields.char('PIN code', size=4, help="The PIN code must be four digits"),
+        'pin_code': fields.char('PIN code', size=4, copy=False, help="The PIN code must be four digits"),
     }
 
     def _check_pin(self, cr, uid, ids, context=None):
@@ -39,3 +39,10 @@ class res_users(osv.osv):
         ]
 
     _sql_constraints = [('pin_code_uniq', 'unique (pin_code)', 'The PIN code must be unique per user!')]
+
+class pos_config(osv.osv):
+    _inherit = 'pos.config'
+
+    _columns = {
+        'lockscreen_every_order': fields.boolean('Lock screen every order', help='Lock screen every POS order'),
+    }
