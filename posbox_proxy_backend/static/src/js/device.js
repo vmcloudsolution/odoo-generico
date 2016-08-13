@@ -3,7 +3,7 @@ function openerp_proxy_device(instance,module){
         _lt = instance.web._lt;
     var QWeb = instance.web.qweb;
 
-    module.ProxyDevice  = instance.web.Class.extend(openerp.PropertiesMixin,{
+    module.ProxyDeviceBackend  = instance.web.Class.extend(openerp.PropertiesMixin,{
         init: function(parent,options){
             openerp.PropertiesMixin.init.call(this,parent);
             var self = this;

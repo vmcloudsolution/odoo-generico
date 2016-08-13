@@ -11,7 +11,7 @@ function openerp_print_invoice(instance, module){
         print_receipts: function(receipts){
             var self = this;
             this.proxy_url = receipts[0].proxy_url;
-            this.proxy = new module.ProxyDevice(this);
+            this.proxy = new module.ProxyDeviceBackend(this);
             this.proxy.connect(this.proxy_url)
             _.each(receipts,function(receipt){
                 this.formato = 'XmlInvoice'

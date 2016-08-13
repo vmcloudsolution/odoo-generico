@@ -10,7 +10,7 @@ function openerp_pos_print_gift_voucher(instance, module){
         print_receipts: function(receipts){
             var self = this;
             this.proxy_url = "http://localhost:8069"
-            this.proxy = new module.ProxyDevice(this);
+            this.proxy = new module.ProxyDeviceBackend(this);
             this.proxy.connect(this.proxy_url)
             _.each(receipts,function(receipt){
                 self.proxy.print_receipt(QWeb.render('XmlPrintVoucher',{
