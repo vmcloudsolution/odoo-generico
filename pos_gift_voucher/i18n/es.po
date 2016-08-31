@@ -9,6 +9,11 @@ msgid "name"
 msgstr "Nombre"
 
 #. module: pos_gift_voucher
+#: field:pos.gift.voucher,order_id:0
+msgid "Ref. order"
+msgstr "Ref. pedido"
+
+#. module: pos_gift_voucher
 #: field:pos.gift.voucher,validity:0
 msgid "validity"
 msgstr "Dias de validez"
@@ -49,6 +54,21 @@ msgid "state"
 msgstr "Estado"
 
 #. module: pos_gift_voucher
+#: field:pos.gift.voucher,partner_id:0
+msgid "partner_id"
+msgstr "Cliente"
+
+#. module: pos_gift_voucher
+#: field:pos.gift.voucher,user_id:0
+msgid "user_id"
+msgstr "Responsable"
+
+#. module: pos_gift_voucher
+#: field:pos.gift.voucher,user_id2:0
+msgid "user_id2"
+msgstr "Vendedor"
+
+#. module: pos_gift_voucher
 #: selection:pos.gift.voucher,state:0
 msgid "Draft"
 msgstr "Borrador"
@@ -82,9 +102,18 @@ msgstr "Cancelar vale de regalo"
 
 #. module: pos_gift_voucher
 #: view:pos.gift.voucher:pos_gift_voucher.gift_voucher_view_form
+msgid "Change to draft"
+msgstr "Cambiar a borrador"
+
+#. module: pos_gift_voucher
+#: view:pos.gift.voucher:pos_gift_voucher.gift_voucher_view_form
+msgid "Cancel voucher?"
+msgstr "Cancelar el vale?"
+
+#. module: pos_gift_voucher
+#: view:pos.gift.voucher:pos_gift_voucher.gift_voucher_view_form
 msgid "Orders"
 msgstr "Pedidos"
-
 
 #. module: pos_gift_voucher
 #: model:ir.ui.menu,name:pos_gift_voucher.menu_gift_voucher
@@ -122,6 +151,16 @@ msgstr "Para eliminar un vale de regalo, este debe ser borrador"
 #: code:addons/pos_gift_voucher/pos_gift_voucher.py:60
 msgid "Operation Forbidden!"
 msgstr "¡Operación prohibida!"
+
+#. module: pos_gift_voucher
+#: code:addons/pos_gift_voucher/pos_gift_voucher.py:60
+msgid "You cannot cancel a gift voucher that has been set to \'Redeemed\'."
+msgstr "No puede cancelar un vale de regalo que ha sido Canjeado"
+
+#. module: pos_gift_voucher
+#: code:addons/pos_gift_voucher/pos_gift_voucher.py:60
+msgid "You cannot change to Draft a gift voucher that has orders."
+msgstr "No puede cambiar a Borrador un vale de regalo que tiene pedidos."
 
 #. module: pos_gift_voucher
 #: code:addons/pos_gift_voucher/pos_gift_voucher.py:60

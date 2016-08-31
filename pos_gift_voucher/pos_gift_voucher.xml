@@ -8,19 +8,25 @@
             <field name="arch" type="xml">
                 <form string="Gift voucher">
                     <header>
-                        <button name="action_cancel" states="draft,opened" string="Cancel Gift voucher" type="object"/>
+                        <button name="action_cancel" states="draft,opened" string="Cancel Gift voucher" type="object" confirm="Cancel voucher?"/>
                         <button name="action_opened" states="draft" string="In Progress" class="oe_highlight" type="object"/>
+                        <button name="action_opened_to_draft" states="opened" string="Change to draft" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,opened,redeemed"/>
                     </header>
                     <sheet string="Gift Voucher">
-                        <field name="gift_voucher_serial"/>
-                        <group col="4">
+                        <field name="gift_voucher_serial" placeholder="Número del vale" on_change="onchange_voucher_serial(gift_voucher_serial)"/>
+                        <group name="col1" col="4">
                             <field name="name"/>
-                            <field name="validity"/>
+                            <field name="order_id" on_change="onchange_order(order_id)" context="{'show_recibo': True}"/>
+                            <field name="partner_id" create="false"/>
                             <field name="issue_date"/>
                             <field name="expiry_date"/>
-                            <field name="amount"/>
+                            <field name="validity"/>
                             <field name="total_available"/>
+                            <field name="amount"/>
+                        </group>
+                        <group name="col2" col="4">
+                             <field name="user_id"/>
                         </group>
                         <notebook colspan="4">
                             <page string="Orders">
@@ -43,13 +49,15 @@
             <field name="model">pos.gift.voucher</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Gift Vouchers" colors="grey:state == 'cancel';green:state == 'opened';blue:state == 'redeemed'">
+                <tree string="Gift Vouchers" colors="grey:state in('cancel','redeemed');blue:state == 'draft';green:state == 'opened'">
                     <field name="name"/>
+                    <field name="gift_voucher_serial"/>
+                    <field name="partner_id"/>
                     <field name="issue_date"/>
                     <field name="expiry_date"/>
                     <field name="validity"/>
+                    <field name="total_available"/>
                     <field name="amount"/>
-                    <field name="gift_voucher_serial"/>
                     <field name="state"/>
                 </tree>
             </field>

@@ -48,7 +48,9 @@ class pos_gift_voucher(osv.osv):
         return res
 
     _columns = {
-        'name': fields.char('Name', select=1, required=True, readonly=True, states={'draft': [('readonly', False)]},),
+        'name': fields.char('Name', select=1, required=True, readonly=True, states={'draft': [('readonly', False)]}),
+        'order_id': fields.many2one('pos.order', 'Ref. Order', readonly=True, states={'draft': [('readonly', False)]}),
+        'partner_id': fields.many2one('res.partner', 'Customer', required=True, readonly=True, states={'draft': [('readonly', False)]}),
         'validity': fields.function(_validity_days, type='integer', string='Validity days'),
         'issue_date': fields.datetime('Issue date', required=True, readonly=True, states={'draft': [('readonly', False)]}),
         'expiry_date': fields.datetime('Expiry date', required=True, readonly=True, states={'draft': [('readonly', False)]}),
@@ -62,6 +64,7 @@ class pos_gift_voucher(osv.osv):
                                    ('redeemed', 'Redeemed'),
                                    ],
                                   'Status', readonly=True, copy=False),
+        'user_id': fields.many2one('res.users', 'Responsible', readonly=True, states={'draft': [('readonly', False)]}),
     }
 
     _defaults = {
@@ -76,6 +79,25 @@ class pos_gift_voucher(osv.osv):
         ('gift_voucher_serial_uniq', 'unique (gift_voucher_serial)', 'The serial of the gift voucher must be unique!'),
         ('gift_voucher_total_available', 'CHECK (total_available>=0)', 'The total available of the gift voucher must be greater or equal to zero!')
     ]
+
+    def onchange_voucher_serial(self, cr, uid, ids, serial, context=None):
+        if serial:
+            v = {
+                'name': 'VALE-'+serial,
+            }
+            return {'value': v}
+        return {}
+
+    def onchange_order(self, cr, uid, ids, order_id, context=None):
+        if order_id:
+            pos_order = self.pool.get('pos.order').browse(cr, uid, order_id, context=context)
+            v = {
+                'partner_id': pos_order.partner_id,
+                'user_id': pos_order.user_id,
+                'issue_date': pos_order.date_order,
+                 }
+            return {'value': v}
+        return {}
 
     def unlink(self, cr, uid, ids, context=None):
         for gift in self.browse(cr, uid, ids, context=context):
@@ -108,13 +130,26 @@ class pos_gift_voucher(osv.osv):
         self.write(cr, uid, ids, {'state': 'cancel'}, context=context)
         return True
 
-    def get_voucher_amount(self, cr, uid, gift_voucher_serial, context=None):
-        voucher_amount = False
+    def action_opened_to_draft(self, cr, uid, ids, context=None):
+        """ Change state opened to draft
+        """
+        for gift in self.browse(cr, uid, ids, context=context):
+            if gift.order_ids:
+                raise osv.except_osv(_('Operation Forbidden!'),
+                                     _('You cannot change to Draft a gift voucher that has orders.'))
+        self.write(cr, uid, ids, {'state': 'draft'}, context=context)
+        return True
+
+    def get_voucher_ids(self, cr, uid, gift_voucher_serial, context=None):
         voucher_ids = self.search(cr, uid, [('gift_voucher_serial', '=', gift_voucher_serial),
                                             ('state', '=', 'opened'),
                                             ('expiry_date', '>=', time.strftime('%Y-%m-%d %H:%M:%S')),
                                             ], context=context)
+        return voucher_ids
+    def get_voucher_amount(self, cr, uid, gift_voucher_serial, context=None):
+        voucher_amount = False
+        voucher_ids = self.get_voucher_ids(cr, uid, gift_voucher_serial, context=context)
         for gift_voucher in self.browse(cr, uid, voucher_ids, context=context):
             voucher_amount = gift_voucher.amount
-        print 'evugor:2222', time.strftime('%Y-%m-%d %H:%M:%S'), voucher_ids, voucher_amount
-        return voucher_amount
+        result = [voucher_amount, 1]
+        return result

@@ -17,6 +17,7 @@ function openerp_pos_gift_voucher_screens(instance,module){
                 }
                 self.set_amount_gift_voucher(0)
                 self.set_gift_voucher_validate(false)
+                self.set_gift_voucher_spent(0);
             };
 
             this.line_gift_voucher_button_handler = function(event){
@@ -34,31 +35,43 @@ function openerp_pos_gift_voucher_screens(instance,module){
                     });
                     return
                 }
-                new instance.web.Model('pos.gift.voucher').call('get_voucher_amount',[gift_voucher_serial]).then(function(voucher_amount){
-                    if (voucher_amount == false) {
-                        self.pos_widget.screen_selector.show_popup('error',{
-                            'message':_t('Invalid voucher'),
-                            'comment':_t('The gift voucher is invalid or has already redeemed'),
-                        });
-
-                    }
-                    if (voucher_amount > self.pos.get('selectedOrder').getTotalTaxIncluded()){
-                        self.pos_widget.screen_selector.show_popup('error',{
-                            'message':_t('Verify the amount'),
-                            'comment':_t('Gift voucher amount must be less or equal to the order'),
-                        });
-                        return
-                    }
-                    self.set_amount_gift_voucher(voucher_amount)
-                    self.set_gift_voucher_validate(true)
-                },function(err,event){
-                    event.preventDefault();
-                    self.pos_widget.screen_selector.show_popup('error-traceback',{
-                        'message':_t('It is not a valid gift voucher'),
-                        'comment':_t('Failed to get Gift voucher'),
-                    });
-                });
+                self.call_gift_voucher_amount(gift_voucher_serial);
             };
+        },
+        validate_amount: function(amount){
+            var self = this;
+            if (amount == false) {
+                self.pos_widget.screen_selector.show_popup('error',{
+                    'message':_t('Invalid voucher'),
+                    'comment':_t('The gift voucher is invalid or has already redeemed'),
+                });
+                return false;
+            }
+            if (amount > self.pos.get('selectedOrder').getTotalTaxIncluded()){
+                self.pos_widget.screen_selector.show_popup('error',{
+                    'message':_t('Verify the amount'),
+                    'comment':_t('Gift voucher amount must be less or equal to the order'),
+                });
+                return false;
+            }
+            return true;
+        },
+        call_gift_voucher_amount: function(gift_voucher_serial){
+            var self = this;
+            new instance.web.Model('pos.gift.voucher').call('get_voucher_amount',[gift_voucher_serial]).then(function(result){
+                if (!self.validate_amount(result[0])){
+                    return false;
+                }
+                self.set_amount_gift_voucher(result[0])
+                self.set_gift_voucher_validate(true)
+                self.set_gift_voucher_spent(result[1])
+            },function(err,event){
+                event.preventDefault();
+                self.pos_widget.screen_selector.show_popup('error-traceback',{
+                    'message':_t('It is not a valid gift voucher'),
+                    'comment':_t('Failed to get Gift voucher'),
+                });
+            });
         },
         get_gift_voucher_serial: function(){
             var selected_line =this.pos.get('selectedOrder').selected_paymentline;
@@ -78,6 +91,12 @@ function openerp_pos_gift_voucher_screens(instance,module){
             var selected_line =this.pos.get('selectedOrder').selected_paymentline;
             if(selected_line){
                 selected_line.set_gift_voucher_validate(val);
+            }
+        },
+        set_gift_voucher_spent:function(val) {
+            var selected_line =this.pos.get('selectedOrder').selected_paymentline;
+            if(selected_line){
+                selected_line.set_gift_voucher_spent(val);
             }
         },
         render_paymentline: function(line){
