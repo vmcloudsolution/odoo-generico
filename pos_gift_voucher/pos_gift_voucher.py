@@ -146,10 +146,13 @@ class pos_gift_voucher(osv.osv):
                                             ('expiry_date', '>=', time.strftime('%Y-%m-%d %H:%M:%S')),
                                             ], context=context)
         return voucher_ids
+
     def get_voucher_amount(self, cr, uid, gift_voucher_serial, context=None):
-        voucher_amount = False
+        voucher_amount = 0
+        voucher_spent = 0
         voucher_ids = self.get_voucher_ids(cr, uid, gift_voucher_serial, context=context)
         for gift_voucher in self.browse(cr, uid, voucher_ids, context=context):
             voucher_amount = gift_voucher.amount
-        result = [voucher_amount, 1]
+            voucher_spent = 1
+        result = [voucher_amount, voucher_spent]
         return result

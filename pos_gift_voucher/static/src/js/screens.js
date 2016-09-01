@@ -38,28 +38,34 @@ function openerp_pos_gift_voucher_screens(instance,module){
                 self.call_gift_voucher_amount(gift_voucher_serial);
             };
         },
-        validate_amount: function(amount){
+        validate_amount: function(spent){
             var self = this;
-            if (amount == false) {
+            if (spent == false) {
                 self.pos_widget.screen_selector.show_popup('error',{
                     'message':_t('Invalid voucher'),
                     'comment':_t('The gift voucher is invalid or has already redeemed'),
                 });
                 return false;
             }
-            if (amount > self.pos.get('selectedOrder').getTotalTaxIncluded()){
+            if (spent > 0) {
+                self.pos_widget.screen_selector.show_popup('error',{
+                    'message':_t('Vale correcto!!'),
+                    'comment':_t(''),
+                });
+            }
+            /*if (amount > self.pos.get('selectedOrder').getTotalTaxIncluded()){
                 self.pos_widget.screen_selector.show_popup('error',{
                     'message':_t('Verify the amount'),
                     'comment':_t('Gift voucher amount must be less or equal to the order'),
                 });
                 return false;
-            }
+            }*/
             return true;
         },
         call_gift_voucher_amount: function(gift_voucher_serial){
             var self = this;
             new instance.web.Model('pos.gift.voucher').call('get_voucher_amount',[gift_voucher_serial]).then(function(result){
-                if (!self.validate_amount(result[0])){
+                if (!self.validate_amount(result[1])){
                     return false;
                 }
                 self.set_amount_gift_voucher(result[0])
