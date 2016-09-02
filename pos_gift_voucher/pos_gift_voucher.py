@@ -50,13 +50,14 @@ class pos_gift_voucher(osv.osv):
     _columns = {
         'name': fields.char('Name', select=1, required=True, readonly=True, states={'draft': [('readonly', False)]}),
         'order_id': fields.many2one('pos.order', 'Ref. Order', readonly=True, states={'draft': [('readonly', False)]}),
-        'partner_id': fields.many2one('res.partner', 'Customer', required=True, readonly=True, states={'draft': [('readonly', False)]}),
+        'partner_id': fields.many2one('res.partner', 'Customer', readonly=True, states={'draft': [('readonly', False)]}),
         'validity': fields.function(_validity_days, type='integer', string='Validity days'),
         'issue_date': fields.datetime('Issue date', required=True, readonly=True, states={'draft': [('readonly', False)]}),
         'expiry_date': fields.datetime('Expiry date', required=True, readonly=True, states={'draft': [('readonly', False)]}),
         'amount': fields.float('Amount', digits_compute=dp.get_precision('Product Price'), readonly=True, states={'draft': [('readonly', False)]}),
         'gift_voucher_serial': fields.char('Gift voucher serial', required=True, readonly=True, states={'draft': [('readonly', False)]}),
         'total_available': fields.integer('Total available', required=True,  readonly=True, states={'draft': [('readonly', False)]}),
+        'total_available_orig': fields.integer('Total available original', required=True, readonly=True, states={'draft': [('readonly', False)]}),
         'order_ids': fields.many2many('pos.order', 'pos_order_gift_voucher', 'pos_gift_voucher_id', 'pos_order_id', 'Orders', readonly=True),
         'state': fields.selection([('draft', 'Draft'),
                                    ('opened', 'In Progress'),
@@ -88,6 +89,14 @@ class pos_gift_voucher(osv.osv):
             return {'value': v}
         return {}
 
+    def onchange_total_available(self, cr, uid, ids, total_available, context=None):
+        if total_available:
+            v = {
+                'total_available_orig': total_available,
+                 }
+            return {'value': v}
+        return {}
+
     def onchange_order(self, cr, uid, ids, order_id, context=None):
         if order_id:
             pos_order = self.pool.get('pos.order').browse(cr, uid, order_id, context=context)
@@ -95,7 +104,7 @@ class pos_gift_voucher(osv.osv):
                 'partner_id': pos_order.partner_id,
                 'user_id': pos_order.user_id,
                 'issue_date': pos_order.date_order,
-                 }
+            }
             return {'value': v}
         return {}
 
@@ -147,11 +156,16 @@ class pos_gift_voucher(osv.osv):
                                             ], context=context)
         return voucher_ids
 
-    def get_voucher_amount(self, cr, uid, gift_voucher_serial, context=None):
+    def get_voucher_amount(self, cr, uid, partner_id, gift_voucher_serial, context=None):
+        """
+            if spent is 0 gift voucher is not valid.
+        """
         voucher_amount = 0
         voucher_spent = 0
         voucher_ids = self.get_voucher_ids(cr, uid, gift_voucher_serial, context=context)
         for gift_voucher in self.browse(cr, uid, voucher_ids, context=context):
+            if gift_voucher.partner_id and gift_voucher.partner_id != partner_id:
+                continue
             voucher_amount = gift_voucher.amount
             voucher_spent = 1
         result = [voucher_amount, voucher_spent]

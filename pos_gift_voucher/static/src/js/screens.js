@@ -35,7 +35,8 @@ function openerp_pos_gift_voucher_screens(instance,module){
                     });
                     return
                 }
-                self.call_gift_voucher_amount(gift_voucher_serial);
+                partner = self.pos.get('selectedOrder').get_client()
+                self.call_gift_voucher_amount(partner ? partner.id : false, gift_voucher_serial);
             };
         },
         validate_amount: function(spent){
@@ -62,9 +63,9 @@ function openerp_pos_gift_voucher_screens(instance,module){
             }*/
             return true;
         },
-        call_gift_voucher_amount: function(gift_voucher_serial){
+        call_gift_voucher_amount: function(partner, gift_voucher_serial){
             var self = this;
-            new instance.web.Model('pos.gift.voucher').call('get_voucher_amount',[gift_voucher_serial]).then(function(result){
+            new instance.web.Model('pos.gift.voucher').call('get_voucher_amount',[partner, gift_voucher_serial]).then(function(result){
                 if (!self.validate_amount(result[1])){
                     return false;
                 }

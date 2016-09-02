@@ -49,6 +49,11 @@ msgid "total_available"
 msgstr "Total disponible"
 
 #. module: pos_gift_voucher
+#: field:pos.gift.voucher,total_available_orig:0
+msgid "total_available_orig"
+msgstr "Total disponible original"
+
+#. module: pos_gift_voucher
 #: field:pos.gift.voucher,state:0
 msgid "state"
 msgstr "Estado"
