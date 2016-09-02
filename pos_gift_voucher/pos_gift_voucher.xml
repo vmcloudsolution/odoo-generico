@@ -75,6 +75,7 @@
         <menuitem
         name="Gift Voucher"
 		id="menu_gift_voucher"
+        groups="point_of_sale.group_pos_manager"
 		parent="point_of_sale.menu_point_root"/>
 
         <menuitem
