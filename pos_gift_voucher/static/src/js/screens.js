@@ -39,16 +39,21 @@ function openerp_pos_gift_voucher_screens(instance,module){
                 self.call_gift_voucher_amount(partner ? partner.id : false, gift_voucher_serial);
             };
         },
-        validate_amount: function(spent){
+        validate_amount: function(result){
             var self = this;
-            if (spent == false) {
+            if (result[1] == false) {
+                if (result[2] != '') {
+                    mensaje = result[2]
+                }else{
+                    mensaje = 'The gift voucher is invalid or has already redeemed'
+                }
                 self.pos_widget.screen_selector.show_popup('error',{
                     'message':_t('Invalid voucher'),
-                    'comment':_t('The gift voucher is invalid or has already redeemed'),
+                    'comment':_t(mensaje),
                 });
                 return false;
             }
-            if (spent > 0) {
+            if (result[1] > 0) {
                 self.pos_widget.screen_selector.show_popup('error',{
                     'message':_t('Vale correcto!!'),
                     'comment':_t(''),
@@ -66,7 +71,7 @@ function openerp_pos_gift_voucher_screens(instance,module){
         call_gift_voucher_amount: function(partner, gift_voucher_serial){
             var self = this;
             new instance.web.Model('pos.gift.voucher').call('get_voucher_amount',[partner, gift_voucher_serial]).then(function(result){
-                if (!self.validate_amount(result[1])){
+                if (!self.validate_amount(result)){
                     return false;
                 }
                 self.set_amount_gift_voucher(result[0])

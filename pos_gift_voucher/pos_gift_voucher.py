@@ -162,11 +162,12 @@ class pos_gift_voucher(osv.osv):
         """
         voucher_amount = 0
         voucher_spent = 0
+        mensaje_error = ''
         voucher_ids = self.get_voucher_ids(cr, uid, gift_voucher_serial, context=context)
         for gift_voucher in self.browse(cr, uid, voucher_ids, context=context):
             if gift_voucher.partner_id and gift_voucher.partner_id != partner_id:
                 continue
             voucher_amount = gift_voucher.amount
             voucher_spent = 1
-        result = [voucher_amount, voucher_spent]
+        result = [voucher_amount, voucher_spent, mensaje_error]
         return result
