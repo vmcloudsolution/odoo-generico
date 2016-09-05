@@ -53,9 +53,15 @@ function openerp_pos_lock_screen_screens(instance,module){
                     if (this.pos.users[i].id == pin_user.id){
                         //this.pos.user = this.pos.users[i]; //Cambia el cajero: Cuando se cree modulo que cambie el vendedor esto se quitara comentario
                         //POR OTRO MODULO HAREMOS QUE CAMBIE EL VENDEDOR
-                        this.pos.get('selectedOrder').set_vendedor(pin_user);
+                        if (this.change_vendedor){
+                            this.pos.get('selectedOrder').set_vendedor(pin_user);
+                            this.pos.vendedor = pin_user;
+                        }
                         this.pos.lock_screen = false;
-                        this.pos.vendedor = pin_user;
+                        this.pos.user_last_PIN = pin_user;
+                        if( this.confirm ){
+                            this.confirm.call(self,self.inputbuffer);
+                        }
                         //FIN
                         break;
                     }
@@ -67,29 +73,33 @@ function openerp_pos_lock_screen_screens(instance,module){
             options = options || {};
             var self = this;
             this._super();
-
+            this.confirm = options.confirm || false; //Por defecto cambia el vendedor
+            this.change_vendedor = options.change_vendedor; //Por defecto cambia el vendedor
+            this.buttons = false;
             this.message = options.message || '';
             this.comment = options.comment || '';
             this.inputbuffer = options.value   || '';
-            this.renderElement();
             this.firstinput = true;
-
+            if (this.confirm){
+                this.buttons = true;
+            }
+            this.renderElement();
             this.$('.input-button,.mode-button').click(function(event){
                 self.click_numpad_button($(this),event);
             });
-            /*this.$('.button.cancel').click(function(){
+
+            this.$('.button.cancel').click(function(){
                 self.pos_widget.screen_selector.close_popup();
                 if( options.cancel ){
                     options.cancel.call(self);
                 }
             });
-
             this.$('.button.confirm').click(function(){
                 self.pos_widget.screen_selector.close_popup();
                 if( options.confirm ){
                     options.confirm.call(self,self.inputbuffer);
                 }
-            });*/
+            });
         },
     });
 }

@@ -14,7 +14,7 @@
     </t>
     <t t-name="LockScreenPopupWidget">
         <div class="modal-dialog">
-            <div class="popup popup-number">
+            <div class="popup popup-number" style="height:430px">
                 <p class="message"><t t-esc=" widget.message || '' " /></p>
                 <div class='popup-input value active password'>
                     <t t-esc='widget.inputbuffer' />
@@ -43,14 +43,16 @@
                     </button>
                     <br />
                 </div>
-                <!--<div class="footer centered">
-                    <div class="button confirm">
-                        Ok
-                    </div>
-                    <div class="button cancel">
-                        Cancel
-                    </div>
-                </div>-->
+                <div class="footer">
+                    <t t-if='widget.buttons'>
+                         <div class="button cancel">
+                            Cancel
+                        </div>
+                        <!--<div class="button confirm">
+                            Ok
+                        </div>-->
+                    </t>
+                </div>
             </div>
         </div>
     </t>

@@ -74,6 +74,10 @@ function openerp_pos_gift_voucher_screens(instance,module){
                 if (!self.validate_amount(result)){
                     return false;
                 }
+                self.pos_widget.screen_selector.show_popup('error',{
+                    'message':_t('Vale correcto!!'),
+                    'comment':_t(''),
+                });
                 self.set_amount_gift_voucher(result[0])
                 self.set_gift_voucher_validate(true)
                 self.set_gift_voucher_spent(result[1])

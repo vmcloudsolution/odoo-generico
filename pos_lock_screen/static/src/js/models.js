@@ -6,13 +6,15 @@ function openerp_pos_lock_screen_models(instance, module){
     module.PosModel = module.PosModel.extend({
         initialize: function(session, attributes) {
             this.lock_screen = true; //Variable que indica si se bloquea la pantalla
+            this.user_last_PIN = false; //Variable que indica cual fue el ultimo PIN valido usado
             this.vendedor = {};
             PosModelSuper.prototype.initialize.call(this, session,attributes);
         },
-        LockScreen: function(){
+        LockScreen: function(message='Ingrese su código PIN', change_vendedor=true){
             if (this.lock_screen){
                 self.pos_widget.screen_selector.show_popup('lock_screen',{
-                    'message':('Ingrese su código PIN'),
+                    'message':(message),
+                    'change_vendedor': change_vendedor,
                 });
             }
         },
