@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="product_normal_form_view">
+            <field name="name">product.product.pack.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <field name="lst_price" position="before">
+                    <label for="fixed_price_variant"/>
+                    <div>
+                        <field name="fixed_price_variant" class="oe_inline"/>
+                        <field name="fixed_price" attrs="{'invisible':[('fixed_price_variant','=',False)]}" class="oe_inline"/>
+                    </div>
+                </field>
+                <field name="lst_price" position="attributes">
+                    <attribute name="attrs">{'invisible':[('fixed_price_variant','=',True)]}</attribute>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
