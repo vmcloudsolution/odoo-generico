@@ -15,7 +15,7 @@ class product_template(osv.osv):
 
         product_uom_obj = self.pool.get('product.uom')
         for product in products:#Recorro de nuevo
-            if product.fixed_price_variant and ptype == 'list_price':#Si coge precio fijo 
+            if product.fixed_price_variant and ptype == 'list_price':#Si coge precio fijo
                 res[product.id] = product.fixed_price
             if 'uom' in context:
                 uom = product.uom_id or product.uos_id
@@ -44,7 +44,7 @@ class product_product(osv.osv):
         return res
 
     _columns = {
-        'fixed_price_variant': fields.boolean('Fijar precio:', help="Precio fijo para la variante. Si contiene valor, se ignora el precio extra de los atributos"),
+        'fixed_price_variant': fields.boolean('Fijar precio:', help="Precio fijo para la variante. Se ignora el precio extra de los atributos"),
         'fixed_price': fields.float('Fijar precio en', digits_compute=dp.get_precision('Product Price'),),
         'lst_price': fields.function(_product_lst_price, fnct_inv=_set_product_lst_price, type='float',
                                      string='Public Price', digits_compute=dp.get_precision('Product Price')),
