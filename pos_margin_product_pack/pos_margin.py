@@ -24,14 +24,29 @@ from openerp.osv import fields, osv
 class pos_order(osv.osv):
     _inherit = 'pos.order'
 
-    def _get_standard_price_pack(self, cr, uid, product_pack, context=None):
-        #Retorna el costo acumulado de los productos que componen el pack
-        product_pack_line_ids = self.pool.get('product.pack.line').search(cr, uid, [('parent_product_id', '=', product_pack)], context=context)
-        product_pack_cost = 0.00
-        for pack_id in product_pack_line_ids:
-            product_pack_line_obj = self.pool.get('product.pack.line').browse(cr, uid, pack_id, context=context)
-            product_pack_cost += product_pack_line_obj.product_id.standard_price
-        return product_pack_cost
+    # def _get_standard_price_pack(self, cr, uid, product_pack, context=None):
+    #     #Retorna el costo acumulado de los productos que componen el pack
+    #     product_pack_line_ids = self.pool.get('product.pack.line').search(cr, uid, [('parent_product_id', '=', product_pack)], context=context)
+    #     product_pack_cost = 0.00
+    #     for pack_id in product_pack_line_ids:
+    #         product_pack_line_obj = self.pool.get('product.pack.line').browse(cr, uid, pack_id, context=context)
+    #         product_pack_cost += product_pack_line_obj.product_id.standard_price
+    #     return product_pack_cost
+
+    def set_gross_margin(self, cr, order, context=None):
+        #Obtiene la utilidad del pack cuando el precio de los componentes esta incluido en el pack
+        uid = 1
+        for line in order.lines:
+            if line.product_id.pack and not line.pack_parent_line_id.id:
+                product_cost = line.product_id.standard_price
+                product_cost_total = line.product_id.standard_price * line.qty
+                pack_line_ids = self.pool.get('pos.order.line').search(cr, uid, [('order_id', '=', order.id), ('pack_parent_line_id', '=', line.id)])
+                pack_cost_total = 0
+                for pack_line in self.pool.get('pos.order.line').browse(cr, uid, pack_line_ids):
+                    pack_cost_total += (pack_line.product_id.standard_price * pack_line.qty)
+                line.standard_price = product_cost
+                line.gross_margin = line.price_subtotal_incl - (product_cost_total + pack_cost_total)
+        return True
 
     def write(self, cr, uid, ids, vals, context=None):
         result = super(pos_order, self).write(cr, uid, ids, vals, context)
@@ -39,21 +54,11 @@ class pos_order(osv.osv):
         #Graba el margen al pasar a estado pagado
         for order in self.browse(cr, uid, ids, context):
             if order.state == 'paid':
-                for line in order.lines:
-                    if line.product_id.pack or line.pack_parent_line_id.id:
-                        product_pack_cost = line.product_id.standard_price
-                        if line.pack_parent_line_id.id:
-                            #Si es un componente de un pack su costo es cero
-                            product_pack_cost = 0
-                        elif line.product_id.pack and not line.product_id.standard_price:
-                            #Solo si es un pack y no tiene costo definido
-                            product_pack_cost = self._get_standard_price_pack(cr, uid, line.product_id.id, context=context)
-                        line.standard_price = product_pack_cost
-                        line.gross_margin = line.price_subtotal_incl - (product_pack_cost * line.qty)
+                self.set_gross_margin(cr, uid, order, context=context)
         return result
 
     def init(self, cr):
-        update = True #Para que se ejecute en caso de actualizar data historica
+        update = False #Para que se ejecute en caso de actualizar data historica
         if update:
             cr.execute("""
                     select 	DISTINCT pos_order.id
@@ -65,19 +70,10 @@ class pos_order(osv.osv):
                                 where product_template.id=product_product.product_tmpl_id
                                     and pack is True
                                 )
-                        and coalesce(gross_margin,0)=0
+                        --and coalesce(gross_margin,0)=0
+                        --and pos_order.name='TGAMA/0843'
 	                """)
             order_ids = map(lambda x: x[0], cr.fetchall())
             for order_id in order_ids:
                 order = self.browse(cr, SUPERUSER_ID, order_id, context=None)
-                for line in order.lines:
-                    product_pack_cost = line.product_id.standard_price
-                    if line.product_id.pack or line.pack_parent_line_id.id:
-                        if line.pack_parent_line_id.id:
-                            #Si es un componente de un pack su costo es cero
-                            product_pack_cost = 0
-                        elif line.product_id.pack and not line.product_id.standard_price:
-                            #Solo si es un pack y no tiene costo definido
-                            product_pack_cost = self._get_standard_price_pack(cr, SUPERUSER_ID, line.product_id.id, context=None)
-                    line.standard_price = product_pack_cost
-                    line.gross_margin = line.price_subtotal_incl - (product_pack_cost * line.qty)
+                self.set_gross_margin(cr, order)
