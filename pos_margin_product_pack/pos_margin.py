@@ -54,7 +54,7 @@ class pos_order(osv.osv):
         #Graba el margen al pasar a estado pagado
         for order in self.browse(cr, uid, ids, context):
             if order.state == 'paid':
-                self.set_gross_margin(cr, uid, order, context=context)
+                self.set_gross_margin(cr, order, context=context)
         return result
 
     def init(self, cr):
