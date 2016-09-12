@@ -7,6 +7,32 @@ function openerp_pos_lock_screen_screens(instance,module){
         click_numpad_button: function($el,event){
             this.numpad_input($el.data('action'));
         },
+        get_user_by_pin: function(inputbuffer) {
+            return this.pos.db.get_user_bye_pin(this.inputbuffer);
+        },
+        find_pin: function(inputbuffer) {
+            pin_user = this.get_user_by_pin(this.inputbuffer);
+            if (pin_user){
+                for(var i = 0, len = this.pos.users.length; i < len; i++){
+                    if (this.pos.users[i].id == pin_user.id){
+                        //this.pos.user = this.pos.users[i]; //Cambia el cajero: Cuando se cree modulo que cambie el vendedor esto se quitara comentario
+                        //POR OTRO MODULO HAREMOS QUE CAMBIE EL VENDEDOR
+                        if (this.change_vendedor){
+                            this.pos.get('selectedOrder').set_vendedor(pin_user);
+                            this.pos.vendedor = pin_user;
+                        }
+                        this.pos.lock_screen = false;
+                        this.pos.user_last_PIN = pin_user;
+                        if( this.confirm ){
+                            this.confirm.call(self,self.inputbuffer);
+                        }
+                        //FIN
+                        break;
+                    }
+                }
+                self.pos_widget.screen_selector.close_popup();
+            }
+        },
         numpad_input: function(input) { //FIXME -> Deduplicate code
             var oldbuf = this.inputbuffer.slice(0);
 
@@ -47,27 +73,7 @@ function openerp_pos_lock_screen_screens(instance,module){
             if (this.inputbuffer !== oldbuf) {
                 this.$('.value').text(this.inputbuffer);
             }
-            pin_user = this.pos.db.get_user_bye_pin(this.inputbuffer);
-            if (pin_user){
-                for(var i = 0, len = this.pos.users.length; i < len; i++){
-                    if (this.pos.users[i].id == pin_user.id){
-                        //this.pos.user = this.pos.users[i]; //Cambia el cajero: Cuando se cree modulo que cambie el vendedor esto se quitara comentario
-                        //POR OTRO MODULO HAREMOS QUE CAMBIE EL VENDEDOR
-                        if (this.change_vendedor){
-                            this.pos.get('selectedOrder').set_vendedor(pin_user);
-                            this.pos.vendedor = pin_user;
-                        }
-                        this.pos.lock_screen = false;
-                        this.pos.user_last_PIN = pin_user;
-                        if( this.confirm ){
-                            this.confirm.call(self,self.inputbuffer);
-                        }
-                        //FIN
-                        break;
-                    }
-                }
-                self.pos_widget.screen_selector.close_popup();
-            }
+            this.find_pin(this.inputbuffer);
         },
         show: function(options){
             options = options || {};

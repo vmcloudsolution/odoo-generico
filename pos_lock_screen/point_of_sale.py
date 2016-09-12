@@ -35,10 +35,10 @@ class res_users(osv.osv):
         return True
 
     _constraints = [
-            (_check_pin, '\nEnter a valid number of four digits for PIN code:\n Example: 1234', ['pin_code']),
+            (_check_pin, 'Ingrese un número valido de cuatro digitos para el código PIN del vale: Ejemplo: 1234', ['pin_code']),
         ]
 
-    _sql_constraints = [('pin_code_uniq', 'unique (pin_code)', 'The PIN code must be unique per user!')]
+    _sql_constraints = [('pin_code_uniq', 'unique (pin_code2)', 'El codigo PIN debe ser unico por usuario!')]
 
 class pos_config(osv.osv):
     _inherit = 'pos.config'
