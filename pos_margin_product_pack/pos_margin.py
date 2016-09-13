@@ -46,6 +46,8 @@ class pos_order(osv.osv):
                     pack_cost_total += (pack_line.product_id.standard_price * pack_line.qty)
                 line.standard_price = product_cost
                 line.gross_margin = line.price_subtotal_incl - (product_cost_total + pack_cost_total)
+            if line.pack_parent_line_id.id:
+                line.gross_margin = 0 #El costo ya esta en el pack padre
         return True
 
     def write(self, cr, uid, ids, vals, context=None):
