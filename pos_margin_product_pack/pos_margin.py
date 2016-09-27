@@ -47,6 +47,7 @@ class pos_order(osv.osv):
                 line.standard_price = product_cost
                 line.gross_margin = line.price_subtotal_incl - (product_cost_total + pack_cost_total)
             if line.pack_parent_line_id.id:
+                line.standard_price = line.product_id.standard_price
                 line.gross_margin = 0 #El costo ya esta en el pack padre
         return True
 
@@ -72,7 +73,7 @@ class pos_order(osv.osv):
                                 where product_template.id=product_product.product_tmpl_id
                                     and pack is True
                                 )
-                        --and coalesce(gross_margin,0)=0
+                        and coalesce(standard_price,0)=0
                         --and pos_order.name='TGAMA/0843'
 	                """)
             order_ids = map(lambda x: x[0], cr.fetchall())
