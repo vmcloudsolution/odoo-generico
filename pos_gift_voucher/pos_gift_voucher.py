@@ -28,6 +28,7 @@ import openerp.addons.decimal_precision as dp
 
 class pos_gift_voucher(osv.osv):
     _name = "pos.gift.voucher"
+    _order = "name"
 
     def _expiry_date(self, cr, uid, context=None):
         date_start = datetime.now()
