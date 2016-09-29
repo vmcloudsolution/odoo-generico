@@ -69,10 +69,10 @@ class pos_order(osv.osv):
                     where 	pos_order.id = pos_order_line.order_id
                         and pos_order_line.product_id = product_product.id
                         and pos_order.state in('paid','done','invoiced')
-                        and exists(select 1 from product_template
+                        /*and exists(select 1 from product_template
                                 where product_template.id=product_product.product_tmpl_id
                                     and pack is True
-                                )
+                                )*/
                         and coalesce(standard_price,0)=0
                         --and pos_order.name='TGAMA/0843'
 	                """)
