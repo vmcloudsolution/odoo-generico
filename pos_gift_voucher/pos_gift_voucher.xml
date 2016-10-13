@@ -64,6 +64,17 @@
             </field>
 	    </record>
 
+        <record id="view_pos_gift_voucher_search" model="ir.ui.view">
+            <field name="name">pos.gift.voucher.search</field>
+            <field name="model">pos.gift.voucher</field>
+            <field name="arch" type="xml">
+                <search string="Gift voucher">
+                    <field name="name" string="Nombre"/>
+                    <field name="partner_id" string="Cliente"/>
+                </search>
+            </field>
+        </record>
+
         <record id="action_gift_voucher" model="ir.actions.act_window">
             <field name="name">Register Gift Voucher</field>
             <field name="res_model">pos.gift.voucher</field>
