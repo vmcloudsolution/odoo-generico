@@ -53,9 +53,7 @@ class pos_order(osv.osv):
 
     def add_payment(self, cr, uid, order_id, data, context=None):
         res = super(pos_order, self).add_payment(cr, uid, order_id, data, context=context)
-        print 'evugor:add_payment000', data
         if data.get('gift_voucher_validate', False):
-            print 'evugor:add_payment'
             gift_obj = self.pool.get('pos.gift.voucher')
             absl_obj = self.pool.get('account.bank.statement.line')
             gift_id = gift_obj.get_voucher_ids(cr, uid, data.get('gift_voucher_serial'), context=context)
@@ -63,7 +61,6 @@ class pos_order(osv.osv):
                 raise osv.except_osv('Error', _('The gift voucher:') + data.get('gift_voucher_serial') + _(' is invalid or has already redeemed.'))
             absl_obj.write(cr, uid, res, {'gift_voucher_id': gift_id[0] if gift_id else 0})
             gift_voucher = gift_obj.browse(cr, uid, gift_id, context=context)
-            print 'evugor:add_payment222', data.get('gift_voucher_spent')
             gift_obj.write(cr, uid, gift_id, {'total_available': gift_voucher.total_available-data.get('gift_voucher_spent'),
                                               'order_ids': [(4, order_id)],})
             gift_obj.set_redeemed(cr, uid, gift_id, context=context)
