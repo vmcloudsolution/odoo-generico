@@ -20,11 +20,13 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
-
+import openerp.addons.decimal_precision as dp
 
 class account_bank_statement_line(osv.osv):
     _inherit = 'account.bank.statement.line'
 
     _columns = {
         'gift_voucher_id': fields.many2one('pos.gift.voucher', 'Gift Voucher', readonly=True),
+        'amount_gift': fields.float('Amount vale', digits_compute=dp.get_precision('Product Price'), readonly=True),
+        'total_gift': fields.integer('Total ', readonly=True, ),
     }

@@ -44,6 +44,17 @@ class pos_order(osv.osv):
             return res
         return super(pos_order, self).search(cr, uid, args=args, context=context, limit=limit)
 
+    def write(self, cr, uid, ids, vals, context=None):
+        result = super(pos_order, self).write(cr, uid, ids, vals, context)
+        gift_voucher_obj = self.pool.get('pos.gift.voucher')
+        if vals and vals.get('state', False) == 'paid':
+            for order in self.browse(cr, uid, ids, context):
+                for statement in order.statement_ids:
+                    if not statement.gift_voucher_id:
+                        continue
+                    gift_voucher_obj.write(cr, uid, statement.gift_voucher_id.id, {'total_available': statement.gift_voucher_id.total_available - statement.total_gift, 'amount': statement.gift_voucher_id.amount - statement.amount_gift, 'order_ids': [(4, order.id)],})
+        return result
+
     def _payment_fields(self, cr, uid, ui_paymentline, context=None):
         res = super(pos_order, self)._payment_fields(cr, uid, ui_paymentline, context=context)
         res['gift_voucher_serial'] = ui_paymentline.get('gift_voucher_serial', False) or ''
@@ -59,9 +70,9 @@ class pos_order(osv.osv):
             gift_id = gift_obj.get_voucher_ids(cr, uid, data.get('gift_voucher_serial'), context=context)
             if not gift_id:
                 raise osv.except_osv('Error', _('The gift voucher:') + data.get('gift_voucher_serial') + _(' is invalid or has already redeemed.'))
-            absl_obj.write(cr, uid, res, {'gift_voucher_id': gift_id[0] if gift_id else 0})
-            gift_voucher = gift_obj.browse(cr, uid, gift_id, context=context)
-            gift_obj.write(cr, uid, gift_id, {'total_available': gift_voucher.total_available-data.get('gift_voucher_spent'),
-                                              'order_ids': [(4, order_id)],})
-            gift_obj.set_redeemed(cr, uid, gift_id, context=context)
+            vals = {'gift_voucher_id': gift_id[0] if gift_id else 0,
+                    'amount_gift': data.get('amount', 0),
+                    'total_gift': data.get('gift_voucher_spent', 0),
+                    }
+            absl_obj.write(cr, uid, res, vals)
         return res
