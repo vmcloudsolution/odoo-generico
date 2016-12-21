@@ -55,6 +55,7 @@
                     <field name="name"/>
                     <field name="gift_voucher_serial"/>
                     <field name="partner_id"/>
+                    <field name="user_id"/>
                     <field name="issue_date"/>
                     <field name="expiry_date"/>
                     <field name="validity"/>
@@ -70,8 +71,13 @@
             <field name="model">pos.gift.voucher</field>
             <field name="arch" type="xml">
                 <search string="Gift voucher">
+                    <filter string="Borrador" domain="[('state','=',('draft'))]"/>
+                    <filter string="En progreso" domain="[('state','=',('opened'))]"/>
+                    <filter string="Cancelado" domain="[('state','=',('cancel'))]"/>
+                    <filter string="Canjeado" domain="[('state','=',('redeemed'))]"/>
                     <field name="name" string="Nombre"/>
                     <field name="partner_id" string="Cliente"/>
+                    <field name="user_id"/>
                     <field name="state"/>
                 </search>
             </field>

@@ -66,7 +66,7 @@ class pos_gift_voucher(osv.osv):
                                    ('redeemed', 'Redeemed'),
                                    ],
                                   'Status', readonly=True, copy=False),
-        'user_id': fields.many2one('res.users', 'Responsible', readonly=True, states={'draft': [('readonly', False)]}),
+        'user_id': fields.many2one('res.users', 'Responsable', readonly=True, states={'draft': [('readonly', False)]}),
     }
 
     _defaults = {
