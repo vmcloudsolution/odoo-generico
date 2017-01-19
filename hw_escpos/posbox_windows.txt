@@ -1,6 +1,0 @@
-- Desintalar los drivers de fabrica de la impresora.
-- Instalar los drivers usando libusb-win32-bin-*
-  Los dll de libusb deben estar en la carpeta windows
-- Reemplazar el modulo hw_escpos por el de github:
-  * los cambios en el codigo esta marcados como: #VMCLOUD
-- Copiar carpeta usb dentro del path de Odoo de librerias python
