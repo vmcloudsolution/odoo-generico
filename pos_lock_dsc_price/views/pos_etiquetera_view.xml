@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="pos_etiquetera_reg_view_form">
+            <field name="name">pos.etiquetera.view.form</field>
+            <field name="model">pos.etiquetera</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Etiqueteras">
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="serie"/>
+                        <field name="seq_ticket"/>
+                        <field name="seq_ticket_fact"/>
+                        <field name="aut_sunat"/>
+                        <field name="partner_id"/>
+                        <field name="active"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="pos_etiquetera_reg_view_tree">
+            <field name="name">pos.etiquetera.view.tree</field>
+            <field name="model">pos.etiquetera</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Etiqueteras">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--<record id="product_category_form_view" model="ir.ui.view">
+            <field name="name">product_category_form_view</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="agrupa_venta"/>
+                    <field name="cat_agrupa_hijos" invisible="1"/>
+                    <field name="with_price" attrs="{'invisible': [('cat_agrupa_hijos','=',True)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="product_template_tree_view" model="ir.ui.view">
+            <field name="name">product.template.product.tree</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="default_code"/>
+                </field>
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="pos_categ_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_users_form_view" model="ir.ui.view">
+        <field name="name">res.users.form.view</field>
+            <field name="model">res.users</field>
+        <field name="inherit_id" ref="point_of_sale.res_users_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ean13']" position="before">
+                    <field name="is_vendedor"/>
+                    <field name="modif_dsc"/>
+                    <field name="modif_prc"/>
+                    <field name="refund_order_done"/>
+                </xpath>
+            </field>
+        </record>-->
+
+        <record model="ir.actions.act_window" id="action_pos_etiquetera_reg">
+            <field name="name">Etiquetera</field>
+            <field name="res_model">pos.etiquetera</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Registre las etiqueteras con su respectiva serie y correlativo de inicio.</field>
+        </record>
+
+
+        <menuitem
+            name="Etiquetera"
+            id="menu_point_of_sale_etiquetera_config"
+            action="action_pos_etiquetera_reg"
+            groups="point_of_sale.group_pos_manager"
+            parent="point_of_sale.menu_point_config_product"/>
+
+        <record id="view_pos_config_form" model="ir.ui.view">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='receipt_header']" position="before">
+                    <field name="pos_etiquetera_id" widget="selection" eval="ref('pos.etiquetera.name')"/>
+                    <field name="width_ticket"/>
+                    <field name="nro_copy"/>
+                    <field name="raz_social"/>
+                    <field name="RUC"/>
+                    <field name="shop_dir_fiscal"/>
+                    <field name="shop_dir"/>
+                    <field name="phone"/>
+                </xpath>
+                <!--<xpath expr="//field[@name='iface_invoicing']" position="after">
+                    <field name="control_stock"/>
+                    <field name="show_stock"/>
+                    <field name="show_product_without_stock"/>
+                </xpath>-->
+            </field>
+        </record>
+
+        <record id="view_pos_order_tree" model="ir.ui.view">
+            <field name="name">pos_etiquetera.view_pos_order_tree</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='pos_reference']" position="before">
+                        <field name="tipo_doc"/>
+                        <field name="num_doc"/>
+                    </xpath>
+                    <xpath expr="//field[@name='pos_reference']" position="replace">
+                    </xpath>
+                    <xpath expr="//field[@name='user_id']" position="after">
+                        <field name="vendedor_id"/>
+                    </xpath>
+                </field>
+        </record>
+
+        <record id="view_pos_pos_form" model="ir.ui.view">
+            <field name="name">pos_etiquetera.view_pos_pos_form</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='partner_id']" position="attributes">
+                        <attribute name="attrs">{'readonly': [('state','!=','draft')], 'required': 1}</attribute>
+                    </xpath>
+                    <!--<xpath expr="//field[@name='location_id']" position="attributes">
+                        <attribute name="attrs">{'readonly': [('state','!=','draft')]}</attribute>
+                    </xpath>-->
+                    <xpath expr="//field[@name='user_id']" position="attributes">
+                        <attribute name="attrs">{'readonly': [('state','!=','draft')]}</attribute>
+                    </xpath>
+                    <field name="partner_id" position="after">
+                        <field name="doc_ori" string="Documento original"/>
+                    </field>
+                    <xpath expr="//field[@name='user_id']" position="after">
+                        <field name="vendedor_id" attrs="{'readonly': [('state','!=','draft')]}"/>
+                    </xpath>
+                    <!--<xpath expr="//field[@name='amount']" position="before">
+                        <field name="ref_pago"/>
+                    </xpath>-->
+                    <xpath expr="//field[@name='picking_id']" position="after">
+                        <field name="tipo_doc"/>
+                        <field name="num_doc"/>
+                    </xpath>
+                    <xpath expr="//field[@name='pos_reference']" position="attributes">
+                        <attribute name="attrs">{'invisible': 1}</attribute>
+                    </xpath>
+                </field>
+        </record>
+        <!--
+        <record id="pos_etiquetera.view_pos_pos_form_readonly" model="ir.ui.view">
+            <field name="name">pos_etiquetera.view_pos_pos_form</field>
+            <field name="model">pos.order</field>
+            <field name="groups_id" eval="[(6, 0, [ref('group_point_of_sale_edit_date_order')])]"/>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='date_order']" position="attributes">
+                        <attribute name="attrs">{'readonly':0}</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='partner_id']" position="attributes">
+                        <attribute name="attrs">{'readonly': 0, 'required': 1}</attribute>
+                    </xpath>
+                    <xpath expr="//field[@name='user_id']" position="attributes">
+                        <attribute name="attrs">{'readonly':0}</attribute>
+                    </xpath>
+                </field>
+        </record>
+        <record id="pos_etiquetera.view_pos_pos_form_readonly3" model="ir.ui.view">
+            <field name="name">pos_etiquetera.view_pos_pos_form</field>
+            <field name="model">pos.order</field>
+            <field name="groups_id" eval="[(6, 0, [ref('group_point_of_sale_edit_date_order')])]"/>
+            <field name="inherit_id" ref="pos_etiquetera.view_pos_pos_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='partner_id']" position="attributes">
+                        <attribute name="attrs">{'readonly': 0, 'required': 1}</attribute>
+                    </xpath>
+                </field>
+        </record>
+
+        <record id="view_pos_pos_form_readonly2" model="ir.ui.view">
+            <field name="name">pos_etiquetera.view_pos_pos_form</field>
+            <field name="model">pos.order</field>
+            <field name="groups_id" eval="[(6, 0, [ref('group_point_of_sale_edit_date_order')])]"/>
+            <field name="inherit_id" ref="pos_etiquetera.view_pos_pos_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='vendedor_id']" position="attributes">
+                        <attribute name="attrs">{'readonly':0}</attribute>
+                    </xpath>
+                </field>
+        </record>-->
+
+        <record id="view_pos_order_filter" model="ir.ui.view">
+                <field name="name">pos.order.list.select</field>
+                <field name="model">pos.order</field>
+                <field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='user_id']" position="after">
+                        <field name="vendedor_id"/>
+                        <field name="tipo_doc"/>
+                        <field name="num_doc"/>
+                    </xpath>
+                    <xpath expr="/search/group/filter[2]" position="after">
+                        <filter string="Vendedor" domain="[]" context="{'group_by':'vendedor_id'}"/>
+                    </xpath>
+                    <xpath expr="/search/group/filter[3]" position="after">
+                        <filter string="Tipo de documento" domain="[]" context="{'group_by':'tipo_doc'}"/>
+                    </xpath>
+                </field>
+            </record>
+
+        <!--<record id="pos_session_opening_form_view" model="ir.ui.view">
+                <field name="name">pos.session.opening.form.view</field>
+                <field name="model">pos.session.opening</field>
+                <field name="inherit_id" ref="point_of_sale.pos_session_opening_form_view"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='pos_config_id']" position="replace">
+                        <field name="pos_config_id" readonly="1" on_change="on_change_config(pos_config_id)"
+                            options="{'no_create': True}" domain="[('state','=','active')]"
+                            class="oe_inline"/>
+                        <field name="pos_state" invisible="1" />
+                    </xpath>
+                </field>
+        </record>
+
+        <record id="view_account_journal_pos_user_form" model="ir.ui.view">
+            <field name="name">POS Journal</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="point_of_sale.view_account_journal_pos_user_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='self_checkout_payment_method']" position="after">
+                    <field name="ref_pago"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_pos_etiquetera_company_form" model="ir.ui.view">
+            <field name="name">res.company.form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//group[@name='account_grp']" position="after">
+                        <group name="tpv_grp" string="Terminal Punto Venta">
+                            <field name="cat_agrupa_venta_hijos"/>
+                        </group>
+                    </xpath>
+                </field>
+        </record>-->
+        <!--Impresion de ticket-->
+        <!--<record id="action_print_ticket" model="ir.actions.client">
+            <field name="name">Button Action</field>
+            <field name="tag">print_action_ticket</field>
+            <field name="context">{'order_ids': [active_id]}</field>
+        </record>
+        <record id="print_ticket_backend" model="ir.ui.view">
+            <field name="name">pos.order.form</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='refund']" position="after">
+                     <button name="%(action_print_ticket)d" string="Imprimir Ticket" type="action" states="paid,done,invoiced" confirm="¿Seguro de imprimir?"/>
+                </xpath>
+                <xpath expr="//button[@name='%(point_of_sale.action_report_pos_receipt)d']" position="attributes">
+                     <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>-->
+    </data>
+</odoo>
