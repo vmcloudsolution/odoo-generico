@@ -16,9 +16,11 @@
         <div class="modal-dialog">
             <div class="popup popup-number" style="height:430px">
                 <p class="message"><t t-esc=" widget.message || '' " /></p>
-                <div class='popup-input value active password'>
+                <h5 style="color:gray; font-size:12px">Utilice el teclado o los botones numéricos</h5>
+                <!--<div class='popup-input value active password'>
                     <t t-esc='widget.inputbuffer' />
-                </div>
+                </div>-->
+                <input class="popup-input value active password input-password-pin" id="input-password-pin" type="password"/>
                 <div class='popup-numpad' style="text-align:center">
                     <button class="input-button number-char" data-action='1'>1</button>
                     <button class="input-button number-char" data-action='2'>2</button>

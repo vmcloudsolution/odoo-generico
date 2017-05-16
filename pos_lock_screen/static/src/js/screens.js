@@ -8,10 +8,10 @@ function openerp_pos_lock_screen_screens(instance,module){
             this.numpad_input($el.data('action'));
         },
         get_user_by_pin: function(inputbuffer) {
-            return this.pos.db.get_user_bye_pin(this.inputbuffer);
+            return this.pos.db.get_user_bye_pin(inputbuffer);
         },
         find_pin: function(inputbuffer) {
-            pin_user = this.get_user_by_pin(this.inputbuffer);
+            pin_user = this.get_user_by_pin(inputbuffer);
             if (pin_user){
                 for(var i = 0, len = this.pos.users.length; i < len; i++){
                     if (this.pos.users[i].id == pin_user.id){
@@ -24,7 +24,7 @@ function openerp_pos_lock_screen_screens(instance,module){
                         this.pos.lock_screen = false;
                         this.pos.user_last_PIN = pin_user;
                         if( this.confirm ){
-                            this.confirm.call(self,self.inputbuffer);
+                            this.confirm.call(self,inputbuffer);
                         }
                         //FIN
                         break;
@@ -71,7 +71,8 @@ function openerp_pos_lock_screen_screens(instance,module){
             this.firstinput = this.inputbuffer.length === 0;
 
             if (this.inputbuffer !== oldbuf) {
-                this.$('.value').text(this.inputbuffer);
+                //this.$('.value').text(this.inputbuffer);
+                this.$('.input-password-pin').val(this.inputbuffer);
             }
             this.find_pin(this.inputbuffer);
         },
@@ -106,6 +107,11 @@ function openerp_pos_lock_screen_screens(instance,module){
                     options.confirm.call(self,self.inputbuffer);
                 }
             });
+            this.$('.input-password-pin').bind('input',function(){
+                self.find_pin($(this).val());
+                self.inputbuffer = $(this).val()
+            });
+            this.$('.input-password-pin').focus();
         },
     });
 }
