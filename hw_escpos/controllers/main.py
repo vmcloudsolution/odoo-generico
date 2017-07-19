@@ -88,12 +88,17 @@ class EscposDriver(Thread):
             printers = usb.core.find(find_all=True, idVendor=0x0519)
 
         for printer in printers:
+            #VMCLOUD Se agrego parche segun ultima actualizacion
+            try:
+                description = usb.util.get_string(printer, 256, printer.iManufacturer) + " " + usb.util.get_string(printer, 256, printer.iProduct)
+            except Exception as e:
+                _logger.error("Can not get printer description: %s" % (e.message or repr(e)))
+                description = 'Unknown printer'
             connected.append({
                 'vendor': printer.idVendor,
                 'product': printer.idProduct,
-                'name': usb.util.get_string(printer, 256, printer.iManufacturer) + " " + usb.util.get_string(printer, 256, printer.iProduct)
-            })
-
+                'name': description
+            })            
         return connected
 
     def lockedstart(self):
