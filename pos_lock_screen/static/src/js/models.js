@@ -11,6 +11,7 @@ function openerp_pos_lock_screen_models(instance, module){
             PosModelSuper.prototype.initialize.call(this, session,attributes);
         },
         LockScreen: function(message='Ingrese su código PIN', change_vendedor=true){
+            var self = this;
             if (this.lock_screen){
                 self.pos_widget.screen_selector.show_popup('lock_screen',{
                     'message':(message),
@@ -26,6 +27,7 @@ function openerp_pos_lock_screen_models(instance, module){
             return result;
         },
         add_new_order: function(){
+            var self = this;
             result = PosModelSuper.prototype.add_new_order.call(this);
             this.get('selectedOrder').set_vendedor(this.vendedor);
             setTimeout(function(){

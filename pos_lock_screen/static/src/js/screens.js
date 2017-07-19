@@ -11,6 +11,7 @@ function openerp_pos_lock_screen_screens(instance,module){
             return this.pos.db.get_user_bye_pin(inputbuffer);
         },
         find_pin: function(inputbuffer) {
+            var self = this;
             pin_user = this.get_user_by_pin(inputbuffer);
             if (pin_user){
                 for(var i = 0, len = this.pos.users.length; i < len; i++){
