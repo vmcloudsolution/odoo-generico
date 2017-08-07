@@ -13,4 +13,4 @@ class PosConfig(models.Model):
     phone = fields.Char('Teléfono', size=50, help="Teléfono")
     shop_dir = fields.Char('Dirección', size=100, help="Dirección del la tienda")
     width_ticket = fields.Integer('Ancho del ticket', default=33, help="Ancho del ticket en caracteres")
-    nro_copy = fields.Integer('Copias del ticket', default=True, help="Numero de copias que imprimira el ticket. Esto es util cuando se trata de papel termico")
+    nro_copy = fields.Integer('Copias del ticket', default=1, help="Numero de copias que imprimira el ticket. Esto es util cuando se trata de papel termico")
