@@ -53,12 +53,12 @@ function openerp_pos_gift_voucher_screens(instance,module){
                 });
                 return false;
             }
-            if (result[1] > 0) {
-                self.pos_widget.screen_selector.show_popup('error',{
-                    'message':_t('Vale correcto!!'),
-                    'comment':_t(''),
-                });
-            }
+//            if (result[1] > 0) {
+//                self.pos_widget.screen_selector.show_popup('error',{
+//                    'message':_t('Vale correcto!!'),
+//                    'comment':_t(''),
+//                });
+//            }
             /*if (amount > self.pos.get('selectedOrder').getTotalTaxIncluded()){
                 self.pos_widget.screen_selector.show_popup('error',{
                     'message':_t('Verify the amount'),
@@ -102,6 +102,7 @@ function openerp_pos_gift_voucher_screens(instance,module){
                 selected_line.set_amount(val);
                 selected_line.node.querySelector('input').value = selected_line.amount.toFixed(2);
             }
+            this.update_payment_summary()
         },
         set_gift_voucher_validate: function(val) {
             var selected_line =this.pos.get('selectedOrder').selected_paymentline;
