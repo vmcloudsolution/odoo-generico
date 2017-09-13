@@ -128,6 +128,12 @@ msgid "Gift Voucher"
 msgstr "Vale de regalo"
 
 #. module: pos_gift_voucher
+#: model:ir.ui.menu,name:pos_gift_voucher.menu_gift_voucher
+#: model:ir.ui.menu,name:pos_gift_voucher.menu_gift_voucher2
+msgid "Gift"
+msgstr "Regalo"
+
+#. module: pos_gift_voucher
 #: field:account.journal,for_gift_voucher:0
 msgid "For gift voucher"
 msgstr "Para vale de regalo"
