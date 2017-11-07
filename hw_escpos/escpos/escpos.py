@@ -3,6 +3,14 @@
 import base64
 import copy
 import io
+import logging#VMCLOUD
+_logger = logging.getLogger(__name__)#VMCLOUD
+# try:
+#     import win32serviceutil#VMCLOUD
+# except ImportError:
+#     win32serviceutil = False
+#     _logger.warning('Modulo win32serviceutil no Instalado')
+import time
 import math
 import md5
 import re
@@ -688,14 +696,27 @@ class Escpos:
 
             stylestack.pop()
 
+        # def reset_service():#VMCLOUD
+        #     #Reincia servicio Odoo
+        #     if os.name == 'nt':
+        #         _logger.info('Error de Impresion!!!')
+        #         services = ['odoo-server-8.0', 'odoo-server-10.0']
+        #         if win32serviceutil:
+        #             for s in services:
+        #                 try:
+        #                     _logger.info('Reiniciando servicio:'+s)
+        #                     win32serviceutil.RestartService(s)
+        #                 except:
+        #                     _logger.info('Error al reiniciar servicio:' + s)
         try:
+            #reset_service()
             stylestack      = StyleStack() 
             serializer      = XmlSerializer(self)
             root            = ET.fromstring(xml.encode('utf-8'))
 
             self._raw(stylestack.to_escpos())
 
-            print_elem(stylestack,serializer,root)
+            print_elem(stylestack, serializer, root)
 
             if 'open-cashdrawer' in root.attrib and root.attrib['open-cashdrawer'] == 'true':
                 self.cashdraw(2)
@@ -705,8 +726,10 @@ class Escpos:
 
         except Exception as e:
             errmsg = str(e)+'\n'+'-'*48+'\n'+traceback.format_exc() + '-'*48+'\n'
-            self.text(errmsg)
+            #self.text(errmsg)
+            self.text('ERROR DE IMPRESION!!'+'\nREIMPRIMA EL TICKET')#VMCLOUD: Ya no imprimira los errores largos si no uno personalizado
             self.cut()
+            #reset_service()
 
             raise e
 
