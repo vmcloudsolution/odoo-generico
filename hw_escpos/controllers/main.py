@@ -189,6 +189,8 @@ class EscposDriver(Thread):
                 self.set_status('error', str(e))
                 errmsg = str(e) + '\n' + '-'*60+'\n' + traceback.format_exc() + '-'*60 + '\n'
                 _logger.error(errmsg);
+                _logger.error('Ocurrio un error al imprimir')  # VMCLOUD
+                error = False  # VMCLOUD: No reintenta la impresion, cajero puede reimprimir el ticket
             finally:
                 if error:
                     self.queue.put((timestamp, task, data))

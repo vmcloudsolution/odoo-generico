@@ -3,6 +3,8 @@
 import time
 import copy
 import io
+import logging#VMCLOUD
+_logger = logging.getLogger(__name__)#VMCLOUD
 import base64
 import math
 import md5
@@ -707,7 +709,8 @@ class Escpos:
 
         except Exception as e:
             errmsg = str(e)+'\n'+'-'*48+'\n'+traceback.format_exc() + '-'*48+'\n'
-            self.text(errmsg)
+            #self.text(errmsg)
+            self.text('ERROR DE IMPRESION!!' + '\nREIMPRIMA EL TICKET')  # VMCLOUD: Ya no imprimira los errores largos si no uno personalizado
             self.cut()
 
             raise e
