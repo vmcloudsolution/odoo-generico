@@ -97,6 +97,14 @@ def get_localize_UTC_to_lima(dt):
     local_date = local_tz.normalize(local_dt)
     return local_date
 
+def get_current_date():
+    """
+    Devuelve la fecha real para lima
+    @return:
+    """
+    loca_date = get_localize_UTC_to_lima(datetime.now())
+    return loca_date.strftime('%Y-%m-%d')
+
 def get_month_name(month):
     meses = {1: 'Enero',
              2: 'Febrero',
@@ -323,10 +331,28 @@ def texto_two_columns(val_left, val_right, width):
     return texto
 
 def extract_file_zip(file_zip, file_extract):
+    """
+    De un archivo Zip, extrae un archivo dado
+    :param file_zip:
+    :param file_extract:
+    :return:
+    """
     path_root = os.path.join(os.path.dirname(os.path.abspath(__file__)))
     zf = zipfile.ZipFile(file_zip, "r")
     file_name = zf.extract(file_extract, path_root)
     return file_name
+
+def extract_file_zip_b64(file_base64, file_extract, b64=True):
+    """
+    De un archivo Zip en base64, extrae un archivo su contenido o en base64
+    """
+    in_memory_data = BytesIO()
+    in_memory_data.write(base64.b64decode(file_base64))
+    in_memory_zip = zipfile.ZipFile(in_memory_data)
+    file_data = in_memory_zip.read(file_extract)
+    in_memory_zip.close()
+    in_memory_data.close()
+    return base64.b64encode(file_data) if b64 else file_data
 
 def request_json(url, data):
     """
@@ -345,7 +371,18 @@ def request_json(url, data):
                     'id': False}
     request_json = json.dumps(request_json)
     try:
-        s.get('http://localhost:8079/web?db=odoo11')#para prueba
+        try:
+            from urllib.parse import urlparse #Python3
+        except:
+            from urlparse import urlparse #Python2
+        url_data = urlparse(url)
+        url_db = '{scheme}://{netloc}/web?db={db}'.format(scheme=url_data.scheme,
+                                                         netloc=url_data.netloc,
+                                                         db=url_data.netloc.split('.')[0]
+                                                         )
+        if url_db.find('localhost') == -1:#Si no es localhost
+            s.get(url_db)
+        #s.get('http://localhost:8079/web?db=portal')#para prueba local
         res = s.post(url, data=request_json, headers=headers)
     except requests.exceptions.RequestException as err:
         return err
