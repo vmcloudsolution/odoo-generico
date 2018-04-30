@@ -845,8 +845,8 @@ class Escpos:
             else:
                 break
 
-        self._raw(TXT_NORMAL)#VMCLOUD
-        self._raw('\x1d\x0F')#VMCLOUD reduce el tamaño de la letra
+        #self._raw(TXT_NORMAL)#VMCLOUD
+        #self._raw('\x1d\x0F')#VMCLOUD reduce el tamaño de la letra
         self._raw(txt)
         
     def set(self, align='left', font='a', type='normal', width=1, height=1):
