@@ -408,9 +408,12 @@ def request_json(url, data):
         res_json = res.json()
         if res_json.get('error', False):
             return 'Mensaje de WebService:%s\n%s' % (url, res_json['error']['data']['message'])
+    elif res.status_code == 404:
+        error = 'No se encuentra la URL:%s\nstatus_code=%s' % (url, res.status_code)
+        return error
     else:
         try:
-            error = 'Error en la solicitud:%s\nstatus_code=' % (url, res.status_code)
+            error = 'Error en la solicitud:%s\nstatus_code=%s' % (url, res.status_code)
             return error
         except:
             error = "Excepcion al crear mensaje de Error"
