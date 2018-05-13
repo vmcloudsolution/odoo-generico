@@ -413,8 +413,9 @@ def request_json(url, data):
             error = 'Error en la solicitud:%s\nstatus_code=' % (url, res.status_code)
             return error
         except:
-            _logger.exception("Excepcion al crear mensaje de Error")
+            error = "Excepcion al crear mensaje de Error"
+            _logger.exception(error)
             _logger.exception(res.status_code)
-            'Excepcion al crear mensaje de Error: %s' % (url,)
+            return error
     return json.loads(res_json['result'])
 
