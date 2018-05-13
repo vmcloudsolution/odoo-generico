@@ -14,6 +14,9 @@ import zipfile
 import requests
 import json
 
+import logging
+_logger = logging.getLogger(__name__)
+
 TWOPLACES = Decimal(10) ** -2
 THREEPLACES = Decimal(10) ** -3
 
@@ -382,7 +385,8 @@ def request_json(url, data):
                                                          )
         if url_db.find('localhost') == -1:#Si no es localhost
             s.get(url_db)
-        #s.get('http://localhost:8079/web?db=portal')#para prueba local
+        #s.get('http://localhost:8079/web?db=appinvoice1205')#para prueba local
+        print 'url', url
         res = s.post(url, data=request_json, headers=headers)
     except requests.exceptions.RequestException as err:
         return err
@@ -405,6 +409,12 @@ def request_json(url, data):
         if res_json.get('error', False):
             return 'Mensaje de WebService:%s\n%s' % (url, res_json['error']['data']['message'])
     else:
-        return 'Error en la solicitud:%s\nstatus_code=' % (url, res.status_code)
+        try:
+            error = 'Error en la solicitud:%s\nstatus_code=' % (url, res.status_code)
+            return error
+        except:
+            _logger.exception("Excepcion al crear mensaje de Error")
+            _logger.exception(res.status_code)
+            'Excepcion al crear mensaje de Error: %s' % (url,)
     return json.loads(res_json['result'])
 
