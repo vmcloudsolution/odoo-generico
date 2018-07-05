@@ -13,6 +13,12 @@ from datetime import datetime
 import zipfile
 import requests
 import json
+import tempfile
+
+try:
+    import segno
+except:
+    segno = None
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -385,7 +391,7 @@ def request_json(url, data):
                                                          )
         if url_db.find('localhost') == -1:#Si no es localhost
             s.get(url_db)
-        #s.get('http://localhost:8079/web?db=appinvoice1205')#para prueba local
+        #s.get('http://localhost:8079/web?db=appeinvoice0706')#para prueba local
         print 'url', url
         res = s.post(url, data=request_json, headers=headers)
     except requests.exceptions.RequestException as err:
@@ -421,4 +427,41 @@ def request_json(url, data):
             _logger.exception(res.status_code)
             return error
     return json.loads(res_json['result'])
+
+
+def qr_code(value):
+    """
+    Devuelve un codigo QR segun la norma ISO/IEC 18004:2006 establecida por SUNAT.
+
+    6.5 Código de barras QR
+        6.5.1. Simbología
+        Para la generación del código de barras se hará uso de la simbología QR Code 2005
+        de acuerdo a la Norma ISO/IEC 18004:2006. D3enominsad “Information technology –
+        Automatic identification and data capture techniques – QR Code 2005 bar code
+        symbology specification”. No debe usarse las variantes:
+        a) Micro QR.
+
+        6.5.2. Características técnicas
+        a) Nivel de corrección de error (Error Correction Level): nivel Q.
+        b) Dimensiones mínimas de los elementos del código de barras:
+            Ancho mínimo de un módulo (X-Dimension): 0,0075 pulgadas (0,190 mm).
+            Codificacion de caracteres UTF8
+
+    6.5.4 Características de la Impresión
+        La impresión debe cumplir las siguientes características:
+        e) Posición del código de barras dentro de la representación impresa: Parte inferior de
+        la representación impresa.
+        f) Tamaño máximo: 6 cm de alto y 6 cm de ancho (incluye el espacio en blanco
+        alrededor del código).
+        g) Zona de silencio mínimo (Quiet Zone) o ancho mínimo obligatorio en blanco
+        alrededor del código impreso para delimitarlo: 1 mm.
+        h) Color de impresión: Negro.
+    """
+    qr = segno.make_qr(value, encoding='utf-8', error='Q')
+    file = tempfile.NamedTemporaryFile(suffix='.png')
+    qr.save(file, scale=4)
+    file.seek(0)
+    image_base64 = get_b64encode(file.name)
+    file.close()
+    return image_base64
 
