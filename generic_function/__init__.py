@@ -318,8 +318,9 @@ def Numero_a_Texto(number_in, nombre_moneda):
         if (len(number_dec) < 2 ):
           number_dec+='0'
 
+        if float(number_str) >= 0 and float(number_str) < 1:
+            converted = 'CERO '
         converted += 'Y '+ number_dec + "/100 " + nombre_moneda
-
         return converted
 
 
@@ -391,7 +392,7 @@ def request_json(url, data):
                                                          )
         if url_db.find('localhost') == -1:#Si no es localhost
             s.get(url_db)
-        #s.get('http://localhost:8079/web?db=appeinvoice0706')#para prueba local
+        #s.get('http://localhost:8079/web?db=appinvoice1507')#para prueba local
         print 'url', url
         res = s.post(url, data=request_json, headers=headers)
     except requests.exceptions.RequestException as err:
