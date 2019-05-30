@@ -35,7 +35,7 @@ class ImprimeBartender(hw_proxy.Proxy):
         productos = data[0]
         result = {'error': 0, 'msg': ''}
         for d in productos:
-            for line in productos[d]:
+            for line in d[1:]:#No considera el primer item por ser para uso del banckend
                 data_to_file += str(line.encode('utf-8', 'ignore')) + ';'
             data_to_file += '\n'
         data_to_file = data_to_file.rstrip('\n')
