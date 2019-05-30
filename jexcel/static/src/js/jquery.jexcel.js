@@ -2311,7 +2311,7 @@ var methods = {
         }
 
         if ($.fn.jexcel.ignoreEvents != true) {
-            if ($.fn.jexcel.defaults[id].onblur) {
+            if ($.fn.jexcel.defaults[id] != undefined && $.fn.jexcel.defaults[id].onblur) {
                 if (typeof($.fn.jexcel.defaults[id].onblur) == 'function') {
                     if (previousStatus == true && currentStatus == false) {
                         $.fn.jexcel.defaults[id].onblur($(this));
@@ -2319,7 +2319,7 @@ var methods = {
                 }
             }
 
-            if ($.fn.jexcel.defaults[id].onfocus) {
+            if ($.fn.jexcel.defaults[id] != undefined && $.fn.jexcel.defaults[id].onfocus) {
                 if (typeof($.fn.jexcel.defaults[id].onfocus) == 'function') {
                     if (previousStatus == false && currentStatus == true) {
                         $.fn.jexcel.defaults[id].onfocus($(this));
