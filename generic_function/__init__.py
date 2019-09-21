@@ -392,7 +392,7 @@ def request_json(url, data):
                                                          )
         if url_db.find('localhost') == -1:#Si no es localhost
             s.get(url_db)
-        #s.get('http://localhost:8079/web?db=appinvoice1507')#para prueba local
+        #s.get('http://192.168.2.25:8079/web?db=einvoice')#para prueba local
         print 'url', url
         res = s.post(url, data=request_json, headers=headers)
     except requests.exceptions.RequestException as err:
@@ -466,3 +466,29 @@ def qr_code(value):
     file.close()
     return image_base64
 
+def convert_xls_to_csv(data):
+    """
+    :param data: data in format xls
+    :return: data in format csv
+    """
+    import os
+    import tempfile
+    import base64
+    import pandas as pd
+
+    # Crea temporales
+    fxls, xls_fname = tempfile.mkstemp()
+    fcsv, csv_fname = tempfile.mkstemp(suffix='.csv')
+    # Excribe los datos del archivo Excel
+    os.write(fxls, base64.b64decode(data))
+    os.close(fxls)
+    # Converte de Excel a CSV
+    pd.read_excel(xls_fname).to_csv(csv_fname, encoding="utf-8", index=False)
+    # Lee el archivo CSV
+    file_csv = open(csv_fname, 'r+')
+    data_csv = base64.b64encode(file_csv.read())
+    new_data = data_csv
+    # Elimina temporales
+    os.unlink(xls_fname)
+    os.unlink(csv_fname)
+    return new_data
