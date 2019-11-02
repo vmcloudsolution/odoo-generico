@@ -2,7 +2,7 @@
 from odoo.tools.float_utils import float_round as round
 from decimal import *
 import base64
-from cStringIO import StringIO
+from io import StringIO
 from odoo.exceptions import UserError
 import pytz
 import os.path as path
@@ -182,7 +182,6 @@ def save_ir_attachment(env, file_name, model, id, data, fields_add, delete=True)
     fields = {
         'name': file_name,
         'datas': data,
-        'datas_fname': file_name,
         'res_model': model,
         'type': 'binary',
         'res_id': id
@@ -392,8 +391,7 @@ def request_json(url, data):
                                                          )
         if url_db.find('localhost') == -1:#Si no es localhost
             s.get(url_db)
-        #s.get('http://192.168.2.25:8079/web?db=einvoice')#para prueba local
-        print 'url', url
+        s.get('http://localhost:8089/web?db=einvoice')#para prueba local
         res = s.post(url, data=request_json, headers=headers)
     except requests.exceptions.RequestException as err:
         return err
