@@ -26,13 +26,13 @@ _logger = logging.getLogger(__name__)
 TWOPLACES = Decimal(10) ** -2
 THREEPLACES = Decimal(10) ** -3
 
-DAYNAMES = [(1, 'Lunes'),
-            (2, 'Martes'),
-            (3, 'Miercoles'),
-            (4, 'Jueves'),
-            (5, 'Viernes'),
-            (6, 'Sabado'),
-            (7, 'Domingo'),
+DAYNAMES = [('1', 'Lunes'),
+            ('2', 'Martes'),
+            ('3', 'Miercoles'),
+            ('4', 'Jueves'),
+            ('5', 'Viernes'),
+            ('6', 'Sabado'),
+            ('7', 'Domingo'),
             ]
 
 UNIDADES = (
