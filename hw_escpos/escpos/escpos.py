@@ -901,9 +901,13 @@ class Escpos:
         # Fix the size between last line and cut
         # TODO: handle this with a line feed
         self._raw("\n\n\n\n\n\n")
+        _logger.info("cut original:"+mode)
+        _logger.info("se cambia a Partial CUT:")
+        mode = 'PART'
         if mode.upper() == "PART":
             self._raw(PAPER_PART_CUT)
         else: # DEFAULT MODE: FULL CUT
+            _logger.info("FULL cut:" + mode)
             self._raw(PAPER_FULL_CUT)
 
 
