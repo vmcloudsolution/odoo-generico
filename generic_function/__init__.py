@@ -81,7 +81,7 @@ CENTENAS = (
     'NOVECIENTOS '
 )
 
-def get_localize_lima_to_UTC(dt):
+def get_localize_lima_to_UTC(dt, quit_tzinfo=False):
     if not dt:
         return False
     if type(dt) == str and len(dt) > 10:
@@ -92,9 +92,11 @@ def get_localize_lima_to_UTC(dt):
     lima = pytz.timezone('America/Lima')
     lima_dt = lima.localize(dt)
     utc_dt = lima_dt.astimezone(utc)
+    if quit_tzinfo:
+        utc_dt = utc_dt.replace(tzinfo=None)
     return utc_dt
 
-def get_localize_UTC_to_lima(dt):
+def get_localize_UTC_to_lima(dt, quit_tzinfo=False):
     if not dt:
         return False
     if type(dt) == str and len(dt) > 10:
@@ -104,6 +106,8 @@ def get_localize_UTC_to_lima(dt):
     local_tz = pytz.timezone('America/Lima')
     local_dt = dt.replace(tzinfo=pytz.utc).astimezone(local_tz)
     local_date = local_tz.normalize(local_dt)
+    if quit_tzinfo:
+        local_date = local_date.replace(tzinfo=None)
     return local_date
 
 def get_current_date():
@@ -391,7 +395,7 @@ def request_json(url, data):
                                                          )
         if url_db.find('localhost') == -1:#Si no es localhost
             s.get(url_db)
-        #s.get('http://localhost:8089/web?db=einvoice')#para prueba local
+        s.get('http://localhost:8089/web?db=einvoice')#para prueba local
         res = s.post(url, data=request_json, headers=headers)
     except requests.exceptions.RequestException as err:
         return err
