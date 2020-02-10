@@ -395,7 +395,7 @@ def request_json(url, data):
                                                          )
         if url_db.find('localhost') == -1:#Si no es localhost
             s.get(url_db)
-        s.get('http://localhost:8089/web?db=einvoice')#para prueba local
+        #s.get('http://localhost:8089/web?db=einvoice')#para prueba local
         res = s.post(url, data=request_json, headers=headers)
     except requests.exceptions.RequestException as err:
         return err
