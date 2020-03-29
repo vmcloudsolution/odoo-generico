@@ -2,9 +2,14 @@
 <odoo>
     <template id="assets_backend" name="account assets" inherit_id="web.assets_backend">
       <xpath expr="." position="inside">
-          <link rel="stylesheet" type="text/css" href="/jexcel/static/src/css/jquery.jexcel.css"/>
-          <script type="text/javascript" src="/jexcel/static/src/js/jquery.jexcel.js"></script>
-          <script type="text/javascript" src="/jexcel/static/src/js/excel-formula.min.js"></script>
+          <!-- Descarga de GitHub https://github.com/paulhodel/jexcel -->
+          <link rel="stylesheet" type="text/css" href="/jexcel/static/src/css/jexcel.css"/>
+          <script type="text/javascript" src="/jexcel/static/src/js/jexcel.js"></script>
+          <!-- Requerido en la V3 de JExcel, segun ejemplo de su Web
+          https://github.com/paulhodel/jsuites
+          -->
+          <script type="text/javascript" src="/jexcel/static/src/js/jsuites.js"></script>
+          <link rel="stylesheet" type="text/css" href="/jexcel/static/src/css/jsuites.css"/>
       </xpath>
     </template>
 </odoo>
