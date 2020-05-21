@@ -487,7 +487,7 @@ def convert_xls_to_csv(data):
     # Converte de Excel a CSV
     pd.read_excel(xls_fname).to_csv(csv_fname, encoding="utf-8", index=False)
     # Lee el archivo CSV
-    file_csv = open(csv_fname, 'r+')
+    file_csv = open(csv_fname, 'rb+')
     data_csv = base64.b64encode(file_csv.read())
     new_data = data_csv
     # Elimina temporales
