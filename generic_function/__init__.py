@@ -134,6 +134,11 @@ def get_month_name(month):
              }
     return meses[int(month)]
 
+def get_last_day_month(date):
+    """Devuelve el ultimo dia del mes"""
+    from calendar import monthrange
+    return date.replace(day=monthrange(date.year, date.month)[1])
+
 def get_palote_data(data, places = 2, tipo='cab'):
     """
     Toma un lista de diccionarios y los devuelve sus valores divididos en palotes
