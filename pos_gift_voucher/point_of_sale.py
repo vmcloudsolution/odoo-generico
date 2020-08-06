@@ -53,6 +53,10 @@ class pos_order(osv.osv):
                     if not statement.gift_voucher_id:
                         continue
                     gift_voucher_obj.write(cr, uid, statement.gift_voucher_id.id, {'total_available': statement.gift_voucher_id.total_available - statement.total_gift, 'amount': statement.gift_voucher_id.amount - statement.amount_gift, 'order_ids': [(4, order.id)],})
+                    if statement.gift_voucher_id.total_available == 0:
+                        gift_voucher_obj.write(cr, uid, statement.gift_voucher_id.id, {'state': 'redeemed'}, context=context)
+                    elif statement.gift_voucher_id.total_available > 0 and statement.gift_voucher_id.state == 'redeemed':
+                        gift_voucher_obj.write(cr, uid, statement.gift_voucher_id.id, {'state': 'opened'}, context=context)
         return result
 
     def _payment_fields(self, cr, uid, ui_paymentline, context=None):
