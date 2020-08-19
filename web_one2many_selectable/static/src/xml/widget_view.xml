@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="One2ManySelectable">
+     	<div class="cf_button_array">
+	        <div>
+				<t t-if="!widget.get('effective_readonly')">
+					<button  icon="gtk-yes"
+							class="cf_button_confirm oe_button oe_highlight"
+							href="javascript:void(0)">
+						<t t-esc="widget.get_text()"/>
+					</button>
+				</t>
+				<t t-if="widget.get('effective_readonly')">
+            		<span class="oe_form_char_content"></span>
+        		</t>
+	        </div>
+        </div>
+    </t>
+
+</templates>
