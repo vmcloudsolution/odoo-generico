@@ -24,13 +24,44 @@ var One2ManySelectable = FieldOne2Many.extend({
 		events: {
 			"click .cf_button_confirm": "action_selected_lines",
 		},
+		_getRenderer: function () {
+            var self = this;
+            var res = this._super.apply(this, arguments);
+            var list_buttons = JSON.parse(this.attrs.list_buttons);
+            //Se poner en duro la creacion de botones porque no se encontro la forma de asignar el parametro de la function action_selected_lines
+            //Problema: se sobrescribe el evento click con el ultimo boton creado
+            for (var i = 0; i < list_buttons.length; i++) {
+                if (i==0){
+                    var $button1 = $("<button  icon='gtk-yes' class='"+list_buttons[i].name+" oe_button' href='javascript:void(0)'>"+list_buttons[i].string+"</button>");
+                    $button1.on('click', function() {
+                        self.action_selected_lines('confirm_selectable_line_1')
+                    });
+                    $button1.appendTo(this.$(".js_selectable_button_array"));
+                }
+                if (i==1){
+                    var $button2 = $("<button  icon='gtk-yes' class='"+list_buttons[i].name+" oe_button' href='javascript:void(0)'>"+list_buttons[i].string+"</button>");
+                    $button2.on('click', function() {
+                        self.action_selected_lines('confirm_selectable_line_2')
+                    });
+                    $button2.appendTo(this.$(".js_selectable_button_array"));
+                }
+                if (i==2){
+                    var $button3 = $("<button  icon='gtk-yes' class='"+list_buttons[i].name+" oe_button' href='javascript:void(0)'>"+list_buttons[i].string+"</button>");
+                    $button3.on('click', function() {
+                        self.action_selected_lines('confirm_selectable_line_3')
+                    });
+                    $button3.appendTo(this.$(".js_selectable_button_array"));
+                }
+            }
+            return res
+        },
 		get_text: function(){
 		    return this.attrs.string_button || 'Confirmar'
 		},
-		action_selected_lines: function(event)
+		action_selected_lines: function(method)
 		{
-			event.stopPropagation();
-			event.preventDefault();
+			//event.stopPropagation();
+			//event.preventDefault();
 			var self=this;
 			var selected_ids = self.get_selected_ids_one2many();
 			if (selected_ids.length === 0)
@@ -40,7 +71,7 @@ var One2ManySelectable = FieldOne2Many.extend({
 			}
 			this._rpc({
                 model: this.model,
-                method: 'confirm_selectable_line',//hardcode
+                method: method,//evugor
                 args: [this.res_id, selected_ids],
             }).then(function (result) {
                 //self.trigger_up('reload');
