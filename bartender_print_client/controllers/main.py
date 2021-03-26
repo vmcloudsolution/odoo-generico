@@ -4,6 +4,8 @@ from odoo import http
 import odoo.addons.generic_function as gf
 import odoo.addons.hw_proxy.controllers.main as hw_proxy
 import os.path as path
+import os
+from datetime import datetime
 import sys
 import subprocess as sp
 import requests
@@ -65,5 +67,10 @@ class ImprimeBartender(hw_proxy.Proxy):
         _logger.info("bart_file_path =%s" % (bart_file_path,))
         _logger.info("bartender_copias =%s" % (bartender_copias,))
         gf.write_file(False, bart_data_path, data_to_file)
+        if not path.exists(path.dirname(bart_data_path) + '\\historico'):
+            os.mkdir(path.dirname(bart_data_path) + '\\historico')
+        fecha = gf.get_localize_UTC_to_lima(datetime.now())
+        name_file_historico = path.dirname(bart_data_path) + '\\historico\\' + fecha.strftime('%y-%m-%d_%H_%M_%S') + '_' + path.basename(bart_data_path)
+        gf.write_file(False, name_file_historico, data_to_file)
         sp.call([bart_exe_path, '/P', bartender_copias, '/X', '/F='+bart_file_path])
         return result
