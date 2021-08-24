@@ -21,7 +21,9 @@ HW_SELECT = '\x1b\x3d\x01'     # Printer select
 HW_RESET  = '\x1b\x3f\x0a\x00' # Reset printer hardware
 # Cash Drawer
 CD_KICK_2 = '\x1b\x70\x00'     # Sends a pulse to pin 2 [] 
-CD_KICK_5 = '\x1b\x70\x01'     # Sends a pulse to pin 5 [] 
+CD_KICK_5 = '\x1b\x70\x01'     # Sends a pulse to pin 5 []
+#Sonido
+BEEP = '\x1b\x42\x03\x03'
 # Paper
 PAPER_FULL_CUT  = '\x1d\x56\x00' # Full cut paper
 PAPER_PART_CUT  = '\x1d\x56\x01' # Partial cut paper

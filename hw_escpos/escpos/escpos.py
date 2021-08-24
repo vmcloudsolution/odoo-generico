@@ -920,6 +920,8 @@ class Escpos:
         else:
             raise CashDrawerError()
 
+    def sendbeep(self):
+        self._raw(BEEP)
 
     def hw(self, hw):
         """ Hardware operations """
