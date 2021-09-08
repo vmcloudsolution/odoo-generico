@@ -79,6 +79,7 @@ class PosOrderSend(models.Model):
     seq_pedido = fields.Char('Secuencia del pedido')
     session_id = fields.Integer('ID Session', help='ID de la session que esta enviando el pedido')
     process = fields.Boolean('¿Procesado?', default=False)
+    table_id = fields.Integer('Mesa')
 
     def save_order(self, data, vat=False):
         #Crea la columna si no existe
@@ -100,13 +101,24 @@ class PosOrderSend(models.Model):
         if not res_company.seq_send_order.id:
             _logger.info("Secuencia de Envio de Pedido no definida")
             return False
-        pos_order_send = self.sudo().search([('name', '=', data['name'])])#Elimina si existe el pedido
-        if pos_order_send:
-            pos_order_send.sudo().unlink()
-        seq_val = self.env['ir.sequence'].sudo().browse(res_company.seq_send_order.id).next_by_id()
-        if data.get('table', False) and data.get('floor', False):
-            seq_val = data['floor']+' - '+data['table']+' - '+seq_val
-        pos_order_send = self.sudo().create({'session_id': data['pos_session_id'], 'name': data['name'], 'seq_pedido': seq_val})
+        seq_val = False
+        if not data.get('no_get_seq_val', False):
+            pos_order_send = self.sudo().search([('name', '=', data['name'])])  # Elimina si existe el pedido
+            seq_val = self.env['ir.sequence'].sudo().browse(res_company.seq_send_order.id).next_by_id()
+            if data.get('table', False) and data.get('floor', False):
+                seq_val = data['floor']+' - '+data['table']+' - '+seq_val
+            if pos_order_send:
+                pos_order_send.write({'session_id': data['pos_session_id']})
+            else:
+                pos_order_send = self.sudo().create({'session_id': data['pos_session_id'], 'name': data['name'], 'seq_pedido': seq_val})
+        elif data.get('no_get_seq_val', False) and data.get('table_id', False):
+            pos_order_send = self.sudo().search([('name', '=', data['name'])])  # Elimina si existe el pedido
+            if pos_order_send:
+                pos_order_send.write({'session_id': data['pos_session_id']})
+            else:
+                if data.get('table', False) and data.get('floor', False):
+                    seq_val = data['floor'] + ' - ' + data['table']
+                pos_order_send = self.sudo().create({'session_id': data['pos_session_id'], 'name': data['name'], 'seq_pedido': seq_val})
         JSON = json.dumps(data)
         JSON = JSON.decode('latin1')
         self._cr.execute("""
