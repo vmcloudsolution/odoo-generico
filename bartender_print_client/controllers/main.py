@@ -31,6 +31,34 @@ class ImprimeBartender(hw_proxy.Proxy):
         """
             Recibe datos y crea el archivo txt
         """
+        ####Funcionalidad de redireccionar impresion, solo debe descomentarse en las computadoras
+        ##que no tengan la impresora conectada y se desea enviar a otro Odoo que si tenga la impresora conectada
+        ##Este procedimiento se usó porque no se pudo compartir la impresora en red del bartender
+        redirect = False
+        if redirect:
+            import requests
+            import json
+            s = requests.Session()
+            headers = {'Content-Type': 'application/json'}
+            request_json = {'jsonrpc': '2.0',
+                            'method': 'call',
+                            'params': {'context': {},
+                                       'data': data
+                                       },
+                            'id': False}
+            request_json = json.dumps(request_json)
+            host = 'http://192.168.100.9:8069'#En algunos casos el usar nombre de equipo demora la impresion, tal vez por lentitud de la red
+            url_host = host+'/hw_proxy/sendprintbartender'
+            #s.get(host+'/web?db=posbox')#Se da por entendido que la base de datos se llama posbox
+            res = s.post(url_host, data=request_json, headers=headers)
+            _logger.info("Resultado de redireccionamiento")
+            _logger.info(res)
+            if res.status_code == 200:
+                res_json = res.json()
+                return res_json
+            else:
+                return {'error': 1, 'msg': 'Error en redireccionamiento a url %s' % url_host}
+        #####
         data_to_file = ''
         productos = data[0]
         result = {'error': 0, 'msg': ''}
