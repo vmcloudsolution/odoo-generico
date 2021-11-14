@@ -55,7 +55,7 @@ class ImprimeBartender(hw_proxy.Proxy):
             _logger.info(res)
             if res.status_code == 200:
                 res_json = res.json()
-                return res_json
+                return {'error': 0, 'msg': ''}
             else:
                 return {'error': 1, 'msg': 'Error en redireccionamiento a url %s' % url_host}
         #####
