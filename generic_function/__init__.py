@@ -2,7 +2,7 @@
 from odoo.tools.float_utils import float_round as round
 from decimal import *
 import base64
-from io import StringIO
+from io import BytesIO, StringIO
 from odoo.exceptions import UserError
 import pytz
 import os.path as path
@@ -226,6 +226,12 @@ def get_b64encode(file_path):
         raise UserError('Error al obtener los datos del archivo')
     return content
 
+def get_content_b64encode(content):
+    content = base64.b64encode(content.encode('utf-8')).decode('utf-8')
+    if not content:
+        return None
+    return content
+
 def get_b64decode(content):
     data = base64.b64decode(content)
     return data
@@ -372,6 +378,16 @@ def extract_file_zip_b64(file_base64, file_extract, b64=True):
     in_memory_data.close()
     return base64.b64encode(file_data) if b64 else file_data
 
+def save_content_zip(file_name_content, content):
+    """
+    El contenido lo almacena en un archivo zip
+    :return: retorna el contenido zip en base64
+    """
+    with BytesIO() as zip_buffer:
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            zip_file.writestr(file_name_content, content)
+        return base64.b64encode(zip_buffer.getvalue()).decode('utf-8')
+
 def request_json(url, data):
     """
     Realiza una peticion JSON
@@ -400,7 +416,7 @@ def request_json(url, data):
                                                          )
         if url_db.find('localhost') == -1:#Si no es localhost
             s.get(url_db)
-        #s.get('http://localhost:8089/web?db=einvoice')#para prueba local
+        #s.get('http://localhost:8095/web?db=factureya0708')#para prueba local
         res = s.post(url, data=request_json, headers=headers)
     except requests.exceptions.RequestException as err:
         return err
