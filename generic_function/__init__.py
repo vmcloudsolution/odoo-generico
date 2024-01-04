@@ -395,7 +395,7 @@ def request_json(url, data):
                                                          netloc=url_data.netloc,
                                                          db=url_data.netloc.split('.')[0]
                                                          )
-        if url_db.find('localhost') == -1:#Si no es localhost
+        if url_db.find('localhost') == -1 and url_db.find(':8069') == -1:#Si no es localhost
             s.get(url_db)
         #s.get('http://localhost:8085/web?db=app-einvoice')#para prueba local
         print 'url', url
