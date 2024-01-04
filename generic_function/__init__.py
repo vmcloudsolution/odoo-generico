@@ -130,6 +130,11 @@ def get_month_name(month):
              }
     return meses[int(month)]
 
+def get_last_day_month(date):
+    """Devuelve el ultimo dia del mes"""
+    from calendar import monthrange
+    return date.replace(day=monthrange(date.year, date.month)[1])
+
 def get_palote_data(data, places = 2, tipo='cab'):
     """
     Toma un lista de diccionarios y los devuelve sus valores divididos en palotes
@@ -392,7 +397,7 @@ def request_json(url, data):
                                                          )
         if url_db.find('localhost') == -1:#Si no es localhost
             s.get(url_db)
-        #s.get('http://192.168.2.25:8079/web?db=einvoice')#para prueba local
+        #s.get('http://localhost:8085/web?db=app-einvoice')#para prueba local
         print 'url', url
         res = s.post(url, data=request_json, headers=headers)
     except requests.exceptions.RequestException as err:
