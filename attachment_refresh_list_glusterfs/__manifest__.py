@@ -4,6 +4,7 @@
 
 {
     'name': 'Refresca la lista de directorio del attachment en caso de error de lectura ',
+    "author": "VMCLOUD SOLUTION",
     'version': '1.0',
     'category': 'Extra Tools',
     'sequence': 6,
