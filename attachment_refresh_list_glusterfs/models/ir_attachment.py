@@ -24,7 +24,7 @@ class IrAttachment(models.Model):
                 with open(full_path, 'rb') as fd:
                     r = base64.b64encode(fd.read())
         except (IOError, OSError):
-            _logger.info("_read_file fallo para %s, intentando actualizar el directorio", full_path, exc_info=True)
+            _logger.info("_read_file fallo para %s, intentando actualizar el directorio", full_path, exc_info=False)
             # Forzar una actualización de metadatos
             directory = os.path.dirname(full_path)
             try:
@@ -39,5 +39,4 @@ class IrAttachment(models.Model):
                         r = base64.b64encode(fd.read())
             except (IOError, OSError):
                 _logger.error("No se pudo actualizar ni leer el archivo %s", full_path, exc_info=True)
-                raise
         return r
